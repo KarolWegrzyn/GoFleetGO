@@ -1,14 +1,14 @@
 To Do List:
-Login and Register accounts
+Login and Register accounts      Karol
 Add company to clients
 Buy a business packet (companies)
 Link employee with his company
 Add money to account
-Add opinion for the app
+Add opinion for the app        Karol
 Make a tool for admins to de/activate cars in the city
+JavaFx Gui        Karol
 
-
-Browse car models
+Browse car models          Karol
 Show nearby cars
 Show all cars in the city
 Book a car
