@@ -126,9 +126,9 @@ CREATE TABLE `subscription` (
 -- Dumping data for table `subscription`
 --
 
-INSERT INTO `subscription` (`Subscription_ID`, `Cost`, `Funds`) VALUES
-(0, 29.99, 1000.00),
-(1, 59.99, 2000.00);
+INSERT INTO `subscription` (`Cost`, `Funds`) VALUES
+(29.99, 1000.00),
+(59.99, 2000.00);
 
 -- --------------------------------------------------------
 
@@ -178,12 +178,14 @@ CREATE TABLE `vechicle` (
 -- Indeksy dla tabeli `admin`
 --
 ALTER TABLE `admin`
+  MODIFY COLUMN `Admin_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Admin_ID`);
 
 --
 -- Indeksy dla tabeli `company`
 --
 ALTER TABLE `company`
+  MODIFY COLUMN `Company_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Company_ID`),
   ADD KEY `Subscription_ID` (`Subscription_ID`);
 
@@ -191,12 +193,14 @@ ALTER TABLE `company`
 -- Indeksy dla tabeli `model`
 --
 ALTER TABLE `model`
+  MODIFY COLUMN `Model_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Model_ID`);
 
 --
 -- Indeksy dla tabeli `reservation`
 --
 ALTER TABLE `reservation`
+  MODIFY COLUMN `Reservation_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Reservation_ID`),
   ADD KEY `User_ID` (`User_ID`),
   ADD KEY `Vechicle_ID` (`Vechicle_ID`);
@@ -205,6 +209,7 @@ ALTER TABLE `reservation`
 -- Indeksy dla tabeli `review`
 --
 ALTER TABLE `review`
+  MODIFY COLUMN `Review_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Review_ID`),
   ADD KEY `User_ID` (`User_ID`);
 
@@ -212,6 +217,7 @@ ALTER TABLE `review`
 -- Indeksy dla tabeli `ride`
 --
 ALTER TABLE `ride`
+  MODIFY COLUMN `Ride_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Ride_ID`),
   ADD KEY `Vechicle_ID` (`Vechicle_ID`),
   ADD KEY `Reservation_ID` (`Reservation_ID`),
@@ -222,18 +228,21 @@ ALTER TABLE `ride`
 -- Indeksy dla tabeli `route`
 --
 ALTER TABLE `route`
+  MODIFY COLUMN `Route_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Route_ID`);
 
 --
 -- Indeksy dla tabeli `subscription`
 --
 ALTER TABLE `subscription`
+  MODIFY COLUMN `Subscription_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Subscription_ID`);
 
 --
 -- Indeksy dla tabeli `transaction`
 --
 ALTER TABLE `transaction`
+  MODIFY COLUMN `Transaction_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Transaction_ID`),
   ADD KEY `User_ID` (`User_ID`),
   ADD KEY `Vechicle_ID` (`Vechicle_ID`),
@@ -243,6 +252,7 @@ ALTER TABLE `transaction`
 -- Indeksy dla tabeli `user`
 --
 ALTER TABLE `user`
+  MODIFY COLUMN `User_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`User_ID`),
   ADD KEY `Company_ID` (`Company_ID`);
 
@@ -250,6 +260,7 @@ ALTER TABLE `user`
 -- Indeksy dla tabeli `vechicle`
 --
 ALTER TABLE `vechicle`
+  MODIFY COLUMN `Vechicle_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Vechicle_ID`),
   ADD KEY `Model_ID` (`Model_ID`);
 
