@@ -1,3 +1,4 @@
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -17,6 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+CREATE DATABASE IF NOT EXISTS `gofleetgo`;
 --
 -- Database: `gofleetgo`
 --
@@ -56,9 +58,11 @@ CREATE TABLE `model` (
   `Model_ID` int(10) NOT NULL,
   `Brand` varchar(50) NOT NULL,
   `Engine` decimal(2,1) NOT NULL,
-  `Fueal_capacity` decimal(4,2) NOT NULL,
+  `Fuel_capacity` decimal(4,2) NOT NULL,
   `Year_of_production` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 
 -- --------------------------------------------------------
 
@@ -69,7 +73,7 @@ CREATE TABLE `model` (
 CREATE TABLE `reservation` (
   `Reservation_ID` int(10) NOT NULL,
   `User_ID` int(10) NOT NULL,
-  `Vechicle_ID` int(10) NOT NULL,
+  `Vehicle_ID` int(10) NOT NULL,
   `Start_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -82,7 +86,7 @@ CREATE TABLE `reservation` (
 CREATE TABLE `review` (
   `Review_ID` int(10) NOT NULL,
   `User_ID` int(10) NOT NULL,
-  `Vechicle_ID` int(10) NOT NULL,
+  `Vehicle_ID` int(10) NOT NULL,
   `Rating` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -95,7 +99,7 @@ CREATE TABLE `review` (
 CREATE TABLE `ride` (
   `Ride_ID` int(10) NOT NULL,
   `User_ID` int(10) NOT NULL,
-  `Vechicle_ID` int(10) NOT NULL,
+  `Vehicle_ID` int(10) NOT NULL,
   `Reservation_ID` int(10) NOT NULL,
   `Route_ID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -122,13 +126,6 @@ CREATE TABLE `subscription` (
   `Funds` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `subscription`
---
-
-INSERT INTO `subscription` (`Cost`, `Funds`) VALUES
-(29.99, 1000.00),
-(59.99, 2000.00);
 
 -- --------------------------------------------------------
 
@@ -139,7 +136,7 @@ INSERT INTO `subscription` (`Cost`, `Funds`) VALUES
 CREATE TABLE `transaction` (
   `Transaction_ID` int(10) NOT NULL,
   `User_ID` int(10) NOT NULL,
-  `Vechicle_ID` int(10) NOT NULL,
+  `Vehicle_ID` int(10) NOT NULL,
   `Ride_ID` int(10) NOT NULL,
   `Date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -161,13 +158,16 @@ CREATE TABLE `user` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `vechicle`
+-- Struktura tabeli dla tabeli `vehicle`
 --
 
-CREATE TABLE `vechicle` (
-  `Vechicle_ID` int(10) NOT NULL,
+CREATE TABLE `vehicle` (
+  `Vehicle_ID` int(10) NOT NULL,
   `Model_ID` int(10) NOT NULL,
-  `Location` varchar(50) NOT NULL
+  `Row` int(10) NOT NULL,
+  `Column` int(10) NOT NULL,
+  `Status` varchar(10) NOT NULL,
+  `Fuel_Level` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -203,7 +203,7 @@ ALTER TABLE `reservation`
   MODIFY COLUMN `Reservation_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Reservation_ID`),
   ADD KEY `User_ID` (`User_ID`),
-  ADD KEY `Vechicle_ID` (`Vechicle_ID`);
+  ADD KEY `Vehicle_ID` (`Vehicle_ID`);
 
 --
 -- Indeksy dla tabeli `review`
@@ -219,7 +219,7 @@ ALTER TABLE `review`
 ALTER TABLE `ride`
   MODIFY COLUMN `Ride_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Ride_ID`),
-  ADD KEY `Vechicle_ID` (`Vechicle_ID`),
+  ADD KEY `Vehhicle_ID` (`Vehicle_ID`),
   ADD KEY `Reservation_ID` (`Reservation_ID`),
   ADD KEY `User_ID` (`User_ID`),
   ADD KEY `Route_ID` (`Route_ID`);
@@ -245,7 +245,7 @@ ALTER TABLE `transaction`
   MODIFY COLUMN `Transaction_ID` int(10) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`Transaction_ID`),
   ADD KEY `User_ID` (`User_ID`),
-  ADD KEY `Vechicle_ID` (`Vechicle_ID`),
+  ADD KEY `Vehicle_ID` (`Vehicle_ID`),
   ADD KEY `Ride_ID` (`Ride_ID`);
 
 --
@@ -257,11 +257,11 @@ ALTER TABLE `user`
   ADD KEY `Company_ID` (`Company_ID`);
 
 --
--- Indeksy dla tabeli `vechicle`
+-- Indeksy dla tabeli `vehicle`
 --
-ALTER TABLE `vechicle`
-  MODIFY COLUMN `Vechicle_ID` int(10) NOT NULL AUTO_INCREMENT,
-  ADD PRIMARY KEY (`Vechicle_ID`),
+ALTER TABLE `vehicle`
+  MODIFY COLUMN `Vehicle_ID` int(10) NOT NULL AUTO_INCREMENT,
+  ADD PRIMARY KEY (`Vehicle_ID`),
   ADD KEY `Model_ID` (`Model_ID`);
 
 --
@@ -279,8 +279,8 @@ ALTER TABLE `company`
 --
 ALTER TABLE `reservation`
   ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `user` (`User_ID`),
-  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`Vechicle_ID`) REFERENCES `vechicle` (`Vechicle_ID`),
-  ADD CONSTRAINT `reservation_ibfk_3` FOREIGN KEY (`Vechicle_ID`) REFERENCES `vechicle` (`Vechicle_ID`);
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`Vehicle_ID`) REFERENCES `vehicle` (`Vehicle_ID`),
+  ADD CONSTRAINT `reservation_ibfk_3` FOREIGN KEY (`Vehicle_ID`) REFERENCES `vehicle` (`Vehicle_ID`);
 
 --
 -- Constraints for table `review`
@@ -292,7 +292,7 @@ ALTER TABLE `review`
 -- Constraints for table `ride`
 --
 ALTER TABLE `ride`
-  ADD CONSTRAINT `ride_ibfk_1` FOREIGN KEY (`Vechicle_ID`) REFERENCES `vechicle` (`Vechicle_ID`),
+  ADD CONSTRAINT `ride_ibfk_1` FOREIGN KEY (`Vehicle_ID`) REFERENCES `vehicle` (`Vehicle_ID`),
   ADD CONSTRAINT `ride_ibfk_2` FOREIGN KEY (`Reservation_ID`) REFERENCES `reservation` (`Reservation_ID`),
   ADD CONSTRAINT `ride_ibfk_3` FOREIGN KEY (`User_ID`) REFERENCES `user` (`User_ID`),
   ADD CONSTRAINT `ride_ibfk_4` FOREIGN KEY (`Route_ID`) REFERENCES `route` (`Route_ID`);
@@ -302,7 +302,7 @@ ALTER TABLE `ride`
 --
 ALTER TABLE `transaction`
   ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `user` (`User_ID`),
-  ADD CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`Vechicle_ID`) REFERENCES `vechicle` (`Vechicle_ID`),
+  ADD CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`Vehicle_ID`) REFERENCES `vehicle` (`Vehicle_ID`),
   ADD CONSTRAINT `transaction_ibfk_3` FOREIGN KEY (`Ride_ID`) REFERENCES `ride` (`Ride_ID`);
 
 --
@@ -312,11 +312,38 @@ ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`Company_ID`) REFERENCES `company` (`Company_ID`);
 
 --
--- Constraints for table `vechicle`
+-- Constraints for table `vehicle`
 --
-ALTER TABLE `vechicle`
-  ADD CONSTRAINT `vechicle_ibfk_1` FOREIGN KEY (`Model_ID`) REFERENCES `model` (`Model_ID`);
+ALTER TABLE `vehicle`
+  ADD CONSTRAINT `vehicle_ibfk_1` FOREIGN KEY (`Model_ID`) REFERENCES `model` (`Model_ID`);
 COMMIT;
+--
+-- Inserting data
+--
+INSERT INTO model (Brand, Engine, Fuel_Capacity, Year_Of_Production) 
+VALUES 
+('Toyota Camry', 2.5, 60.0, '2022-05-15'),
+('Honda Civic', 1.8, 55.0, '2021-08-20'),
+('Ford Mustang', 5.0, 70.0, '2023-02-10'),
+('Chevrolet Silverado', 6.2, 80.0, '2022-11-05'),
+('Nissan Altima', 2.0, 58.0, '2023-06-30');
+
+INSERT INTO `subscription` (`Cost`, `Funds`) VALUES
+(29.99, 1000.00),
+(59.99, 2000.00);
+
+INSERT INTO vehicle (Model_ID, `Row`, `Column`, `Status`, `Fuel_Level`)
+SELECT
+  FLOOR(RAND() * 5) + 1,
+  2,
+  2,
+  'disabled',  
+  m.Fuel_capacity
+FROM
+  model m
+CROSS JOIN (SELECT 1 AS n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+            UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) numbers
+LIMIT 10;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
