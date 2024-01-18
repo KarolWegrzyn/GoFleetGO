@@ -3,21 +3,24 @@ package Repositories;
 import Classes.User;
 import Managers.ConnectionManager;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserRepository {
 
-    public void insertUser(User user) {
+    public static void insertUser(User user) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO User (Username, Password, Company_ID, Email) VALUES (?, ?, ?, ?)")) {
+                     "INSERT INTO User (Username, Password, Company_ID, Email, Balance) VALUES (?, ?, ?, ?, ?)")) {
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setInt(3, user.getCompanyID());
+            Integer companyID = user.getCompanyID();
+            if (companyID != null) {
+                preparedStatement.setInt(3, companyID);
+            } else {
+                preparedStatement.setNull(3, Types.INTEGER); // Assuming the column type is INTEGER
+            }
             preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setDouble(5, 0);
 
             int rowsAffected = preparedStatement.executeUpdate();
 
@@ -32,7 +35,7 @@ public class UserRepository {
         }
     }
 
-    public User findUserById(int userID) {
+    public static User findUserById(int userID) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT * FROM User WHERE User_ID = ?")) {
@@ -53,6 +56,28 @@ public class UserRepository {
         }
 
         return null;
+    }
+
+    public void updateBalance(int userId, double amount) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE User SET Balance = Balance + ? WHERE User_ID = ?")) {
+
+            preparedStatement.setDouble(1, amount);
+            preparedStatement.setInt(2, userId);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Balance updated successfully for User_ID: " + userId);
+            } else {
+                System.out.println("Failed to update balance for User_ID: " + userId);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception as needed, e.g., log or throw a custom exception
+        }
     }
 
     // Add other methods as needed

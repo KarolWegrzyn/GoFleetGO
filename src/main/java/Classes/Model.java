@@ -1,10 +1,9 @@
 package Classes;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import Repositories.ModelRepository;
+
 import java.util.Date;
+import java.util.List;
 
 public class Model {
     private int modelID;
@@ -21,6 +20,18 @@ public class Model {
         this.yearOfProduction = yearOfProduction;
     }
 
+    public static void ListAllModels(){
+        ModelRepository modelRepository = new ModelRepository();
+        List<Model> listOfModels = modelRepository.getAllDistinctModels();
+        for (Model model : listOfModels) {
+            System.out.println("Model ID: " + model.getModelID());
+            System.out.println("Brand: " + model.getBrand());
+            System.out.println("Engine: " + model.getEngine());
+            System.out.println("Fuel Capacity: " + model.getFuelCapacity());
+            System.out.println("Year of Production: " + model.getYearOfProduction());
+            System.out.println("------------------------------");
+        }
+    }
     // Getters and setters
 
     public int getModelID() {

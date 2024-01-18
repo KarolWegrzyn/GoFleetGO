@@ -32,6 +32,39 @@ public class RideRepository {
         }
     }
 
+    public static Ride createNewRide(int userId, int vehicleId, Integer reservationId, int routeId) {
+        int generatedId = -1;
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "INSERT INTO Reservation (User_ID, Vechicle_ID, Reservation_ID, Route_ID) VALUES (?, ?, ?, ?)")) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, vehicleId);
+            if (reservationId == null){
+                preparedStatement.setNull(3, java.sql.Types.INTEGER);
+            } else {
+                preparedStatement.setInt(3, reservationId);
+            }
+            preparedStatement.setInt(4, routeId);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
+                    generatedId = generatedKeys.getInt(1);
+                    System.out.println("Ride inserted successfully.");
+                    return new Ride(generatedId, userId, vehicleId, reservationId, routeId);
+                }
+            } else {
+                System.out.println("Failed to insert ride.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Ride findRideById(int rideID) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(

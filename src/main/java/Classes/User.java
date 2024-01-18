@@ -1,23 +1,20 @@
 package Classes;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class User {
     private int userID;
     private String username;
     private String password;
-    private int companyID;
+    private Integer companyID;
     private String email;
+    private double balance;
 
-    public User(int userID, String username, String password, int companyID, String email) {
+    public User(int userID, String username, String password, Integer companyID, String email) {
         this.userID = userID;
         this.username = username;
         this.password = password;
         this.companyID = companyID;
         this.email = email;
+        this.balance = 0;
     }
 
     // Getters and setters
@@ -46,7 +43,8 @@ public class User {
         this.password = password;
     }
 
-    public int getCompanyID() {
+    public Integer getCompanyID() {
+        if (companyID == null) return null;
         return companyID;
     }
 
@@ -71,6 +69,14 @@ public class User {
                 ", companyID=" + companyID +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }
 
