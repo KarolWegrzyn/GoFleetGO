@@ -1,12 +1,14 @@
 package MapClasses;
 
 import Classes.Vehicle;
+import Repositories.VehicleRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Map{
-    private final int mapSize = 50;
+    private final int mapSize = 10;
+    private final int[] baseLocation = {2,2};
     Position[][] map = new Position[mapSize][mapSize];
     //int[][] map = new int[mapSize][mapSize];
 
@@ -21,7 +23,7 @@ public class Map{
                 Position.EnumMapType mapType = Position.EnumMapType.road;
                 if ( (row % 2 == 0) && (column % 2 == 0) ) {
                     mapType = Position.EnumMapType.building;
-                } else if ( (row > 20 && row < 30) && (column > 20 && column < 30)) {
+                } else if ( (row > mapSize/3 && row < mapSize/2) && (column > mapSize/3 && column < mapSize/2)) { //do poprawy
                     mapType = Position.EnumMapType.noParking;
                 }
 
@@ -50,8 +52,34 @@ public class Map{
         }
     }
 
-    public boolean placeCar(int row, int column, Integer vehicleId) {
+    public void placeCar(int row, int column, Integer vehicleId) throws Exception {
+        VehicleRepository vehicleRepository = new VehicleRepository();
+        Vehicle vehicle = vehicleRepository.findVehicleById(vehicleId);
+        if (vehicle == null){
+            throw new Exception("placeCarException: vehicle not found!");
+        }
+        if (vehicle.getRow() != baseLocation[0] || vehicle.getColumn() != baseLocation[1]){
+            throw new Exception("placeCarException: vehicle is not in the base!");
+        }
         map[row][column].vehicleId = vehicleId;
-        return true;
+        vehicleRepository.updateLocation(vehicleId,row,column);
+        vehicleRepository.updateStatus(vehicleId, Vehicle.VehicleStatus.free);
+    }
+
+    public void moveVehicleToBase(Integer vehicleId) throws Exception {
+        VehicleRepository vehicleRepository = new VehicleRepository();
+        Vehicle vehicle = vehicleRepository.findVehicleById(vehicleId);
+        if (vehicle == null){
+            throw new Exception("moveVehicleToBaseException: vehicle not found!");
+        }
+        if (vehicle.getRow() == baseLocation[0] || vehicle.getColumn() == baseLocation[1]){
+            throw new Exception("moveVehicleToBaseException: vehicle is already in the base!");
+        }
+        if (!vehicle.getStatus().equals(Vehicle.VehicleStatus.free)){
+            throw new Exception("moveVehicleToBaseException: vehicle is in use!");
+        }
+        map[vehicle.getRow()][vehicle.getColumn()].vehicleId = null;
+        vehicleRepository.updateLocation(vehicleId,baseLocation[0],baseLocation[1]);
+        vehicleRepository.updateStatus(vehicleId, Vehicle.VehicleStatus.disabled);
     }
 }

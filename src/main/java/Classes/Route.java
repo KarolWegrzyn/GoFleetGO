@@ -7,9 +7,19 @@ import java.sql.SQLException;
 
 public class Route {
     private int routeID;
+    private int startRow;
+    private int startColumn;
+    private int finishRow;
+    private int finishColumn;
+    private double distance;
 
-    public Route(int routeID) {
+    public Route(int routeID, int startRow, int startColumn, int finishRow, int finishColumn, double distance) {
         this.routeID = routeID;
+        this.startRow = startRow;
+        this.startColumn = startColumn;
+        this.finishRow = finishRow;
+        this.finishColumn = finishColumn;
+        this.distance = distance;
     }
 
     // Getters and setters
@@ -27,6 +37,47 @@ public class Route {
         return "Route{" +
                 "routeID=" + routeID +
                 '}';
+    }
+
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public int getStartRow() {
+        return startRow;
+    }
+
+    public void setStartRow(int startRow) {
+        this.startRow = startRow;
+    }
+
+    public int getStartColumn() {
+        return startColumn;
+    }
+
+    public void setStartColumn(int startColumn) {
+        this.startColumn = startColumn;
+    }
+
+    public int getFinishRow() {
+        return finishRow;
+    }
+
+    public void setFinishRow(int finishRow) {
+        this.finishRow = finishRow;
+    }
+
+    public int getFinishColumn() {
+        return finishColumn;
+    }
+
+    public void setFinishColumn(int finishColumn) {
+        this.finishColumn = finishColumn;
     }
 }
 

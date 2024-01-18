@@ -74,7 +74,8 @@ CREATE TABLE `reservation` (
   `Reservation_ID` int(10) NOT NULL,
   `User_ID` int(10) NOT NULL,
   `Vehicle_ID` int(10) NOT NULL,
-  `Start_time` datetime NOT NULL
+  `End_time` datetime NOT NULL,
+  `Status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -100,7 +101,7 @@ CREATE TABLE `ride` (
   `Ride_ID` int(10) NOT NULL,
   `User_ID` int(10) NOT NULL,
   `Vehicle_ID` int(10) NOT NULL,
-  `Reservation_ID` int(10) NOT NULL,
+  `Reservation_ID` int(10),
   `Route_ID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -111,7 +112,12 @@ CREATE TABLE `ride` (
 --
 
 CREATE TABLE `route` (
-  `Route_ID` int(10) NOT NULL
+  `Route_ID` int(10) NOT NULL,
+  `Start_Row` int(100) NOT NULL,
+  `Start_Column` int(100) NOT NULL,
+  `Finish_Row` int(100) NOT NULL,
+  `Finish_Column` int(100) NOT NULL,
+  `Distance` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -151,8 +157,9 @@ CREATE TABLE `user` (
   `User_ID` int(10) NOT NULL,
   `Username` varchar(50) NOT NULL,
   `Password` varchar(50) NOT NULL,
-  `Company_ID` int(11) NOT NULL,
-  `Email` varchar(50) NOT NULL
+  `Company_ID` int(11),
+  `Email` varchar(50) NOT NULL,
+  `Balance` decimal(20,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
