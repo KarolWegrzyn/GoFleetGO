@@ -17,4 +17,8 @@ public class Position {
         this.mapType = type;
         this.vehicleId = vehicleId;
     }
+
+    public String ToString(){
+        return "r" + String.valueOf(row) + "c" + String.valueOf(column) + "t" + mapType + "id" + vehicleId;
+    }
 }

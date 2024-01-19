@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Map{
-    private final int mapSize = 10;
-    private final int[] baseLocation = {2,2};
-    Position[][] map = new Position[mapSize][mapSize];
+    private static final int mapSize = 10;
+    private static final int[] baseLocation = {2,2};
+    static Position[][] map = new Position[mapSize][mapSize];
     //int[][] map = new int[mapSize][mapSize];
 
     public Map(){
@@ -23,7 +23,7 @@ public class Map{
                 Position.EnumMapType mapType = Position.EnumMapType.road;
                 if ( (row % 2 == 0) && (column % 2 == 0) ) {
                     mapType = Position.EnumMapType.building;
-                } else if ( (row > mapSize/3 && row < mapSize/2) && (column > mapSize/3 && column < mapSize/2)) { //do poprawy
+                } else if ( (row > mapSize/3 && row < mapSize/2) && (column > mapSize/3 && column < mapSize/2)) {
                     mapType = Position.EnumMapType.noParking;
                 }
 
@@ -81,5 +81,12 @@ public class Map{
         map[vehicle.getRow()][vehicle.getColumn()].vehicleId = null;
         vehicleRepository.updateLocation(vehicleId,baseLocation[0],baseLocation[1]);
         vehicleRepository.updateStatus(vehicleId, Vehicle.VehicleStatus.disabled);
+    }
+    public static int getMapSize(){
+        return mapSize;
+    }
+
+    public static Position.EnumMapType getPositionType(int row, int column){
+        return map[row][column].mapType;
     }
 }
