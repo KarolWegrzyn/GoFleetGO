@@ -82,7 +82,7 @@ public class VehicleRepository {
         }
     }
 
-    public void updateLocation(int vehicleID, int newRow, int newColumn) {
+    public static void updateLocation(int vehicleID, int newRow, int newColumn) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "UPDATE vehicle SET `Row` = ?, `Column` = ? WHERE Vehicle_ID = ?")) {

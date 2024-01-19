@@ -4,10 +4,7 @@ import Classes.Ride;
 import Classes.Route;
 import Managers.ConnectionManager;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class RouteRepository {
 
@@ -52,32 +49,65 @@ public class RouteRepository {
         return null;
     }
 
+    public static void updateRoute(int routeID, int finishRow, int finishColumn, int distance) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE Route SET `Finish_Row` = ?, `Finish_Column` = ?, `Distance` = ? WHERE Route_ID = ?")) {
+
+            preparedStatement.setInt(1, finishRow);
+            preparedStatement.setInt(2, finishColumn);
+            preparedStatement.setInt(3, distance);
+            preparedStatement.setInt(4, routeID);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Route updated successfully.");
+            } else {
+                System.out.println("Failed to update route.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static int createNewRoute(int[] startPoint) {
         int generatedId = -1;
 
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO Route (Start_Point_Row, Start_Point_Column) VALUES (?, ?")) {
+                     "INSERT INTO Route (Start_Row, Start_Column, Finish_Row, Finish_Column, Distance) VALUES (?, ?, ?, ?, ?)",
+                     Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, startPoint[0]);
             preparedStatement.setInt(2, startPoint[1]);
+            preparedStatement.setNull(3, java.sql.Types.INTEGER);
+            preparedStatement.setNull(4, java.sql.Types.INTEGER);
+            preparedStatement.setNull(5, java.sql.Types.INTEGER);
 
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-                try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
-                    generatedId = generatedKeys.getInt(1);
-                    System.out.println("Ride inserted successfully.");
-                    return generatedId;
+                // Retrieve the generated keys
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        generatedId = generatedKeys.getInt(1);
+                        System.out.println("Route inserted successfully. Generated ID: " + generatedId);
+                    } else {
+                        System.out.println("Failed to retrieve generated ID.");
+                    }
                 }
+            } else {
+                System.out.println("Failed to insert route.");
             }
-            throw new Exception("Failed to insert route.");
 
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return -1;
+        return generatedId;
     }
 
     // Add other methods as needed

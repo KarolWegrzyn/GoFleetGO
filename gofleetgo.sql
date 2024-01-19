@@ -115,9 +115,9 @@ CREATE TABLE `route` (
   `Route_ID` int(10) NOT NULL,
   `Start_Row` int(100) NOT NULL,
   `Start_Column` int(100) NOT NULL,
-  `Finish_Row` int(100) NOT NULL,
-  `Finish_Column` int(100) NOT NULL,
-  `Distance` int(100) NOT NULL
+  `Finish_Row` int(100),
+  `Finish_Column` int(100),
+  `Distance` int(100)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

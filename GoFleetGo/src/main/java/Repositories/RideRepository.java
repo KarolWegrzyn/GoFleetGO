@@ -1,12 +1,10 @@
 package Repositories;
 
 import Classes.Ride;
+import Classes.Vehicle;
 import Managers.ConnectionManager;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class RideRepository {
 
@@ -37,7 +35,8 @@ public class RideRepository {
 
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO Reservation (User_ID, Vechicle_ID, Reservation_ID, Route_ID) VALUES (?, ?, ?, ?)")) {
+                     "INSERT INTO Ride (User_ID, Vehicle_ID, Reservation_ID, Route_ID) VALUES (?, ?, ?, ?)",
+                     Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, vehicleId);
             if (reservationId == null){
@@ -50,10 +49,16 @@ public class RideRepository {
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-                try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
-                    generatedId = generatedKeys.getInt(1);
-                    System.out.println("Ride inserted successfully.");
-                    return new Ride(generatedId, userId, vehicleId, reservationId, routeId);
+                // Retrieve the generated keys
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        generatedId = generatedKeys.getInt(1);
+                        System.out.println("Ride inserted successfully. Generated ID: " + generatedId);
+
+                        return new Ride(generatedId, userId, vehicleId, reservationId, routeId);
+                    } else {
+                        System.out.println("Failed to retrieve generated ID.");
+                    }
                 }
             } else {
                 System.out.println("Failed to insert ride.");
