@@ -7,6 +7,21 @@ import java.sql.*;
 
 public class UserRepository {
 
+    private static UI.User getUserByUsername(Connection connection, String userName) throws SQLException {
+        String query = "SELECT * FROM user WHERE Username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int userId = resultSet.getInt("user_id");
+                    String userPassword = resultSet.getString("password");
+                    return new UI.User(userId, userName, userPassword, 1,null);
+                }
+            }
+        }
+        return null;
+    }
     public static void insertUser(User user) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
@@ -34,11 +49,33 @@ public class UserRepository {
             e.printStackTrace();
         }
     }
-
-    public UI.User findUserByUsername(String Username) {
+    public static void insertUser(String username, String password, String email) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM User WHERE Username = '?'")) {
+                     "INSERT INTO User (Username, Password, Company_ID, Email, Balance) VALUES (?, ?, ?, ?, ?)")) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.setNull(3, Types.INTEGER);
+
+            preparedStatement.setString(4, email);
+            preparedStatement.setDouble(5, 0);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("User inserted successfully.");
+            } else {
+                System.out.println("Failed to insert user.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static UI.User findUserByUsername(String Username) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT * FROM User WHERE Username = ?")) {
             preparedStatement.setString(1, Username);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -50,6 +87,8 @@ public class UserRepository {
                 String email = resultSet.getString("Email");
 
                 return new UI.User(id, username, password, companyID, email);
+            } else {
+                return null;
             }
         } catch (SQLException e) {
             e.printStackTrace();
