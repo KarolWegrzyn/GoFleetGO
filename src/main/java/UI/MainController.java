@@ -17,6 +17,8 @@ public class MainController {
     @FXML
     private Button button_login;
     @FXML
+    private Button button_register;
+    @FXML
     private TextField text_us_log;
     @FXML
     private TextField text_pas;
@@ -72,6 +74,29 @@ public class MainController {
             }
         }
     }
+
+    @FXML
+    private void changeToRegister(ActionEvent event)
+    {
+        if(event.getSource().equals(button_register))
+        {
+            try{
+                Stage stage = (Stage) borderPane.getScene().getWindow();
+                stage.close();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/example/gofleetgo/register.fxml"));
+                Parent root = (Parent) fxmlLoader.load();
+                Stage stage1 = new Stage();
+                stage1.setScene(new Scene(root));
+                stage1.setTitle("GoFleetGo");
+                stage1.show();
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
     /*
     @FXML
     private void saveCredentials(ActionEvent event) {
@@ -83,6 +108,4 @@ public class MainController {
         System.out.println("Zapisano dane: " + username + ", " + password);
     }
     */
-    //System.out.println("Zapisano dane: " + username + ", " + password);
-
-}
+//System.out.println("Zapisano dane: " + username + ", " + password);

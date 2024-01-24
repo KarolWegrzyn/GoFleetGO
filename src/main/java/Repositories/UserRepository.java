@@ -35,6 +35,30 @@ public class UserRepository {
         }
     }
 
+    public static void insertUser(String username, String password, String email) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "INSERT INTO User (Username, Password, Company_ID, Email, Balance) VALUES (?, ?, ?, ?, ?)")) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.setNull(3, Types.INTEGER);
+
+            preparedStatement.setString(4, email);
+            preparedStatement.setDouble(5, 0);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("User inserted successfully.");
+            } else {
+                System.out.println("Failed to insert user.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public UI.User findUserByUsername(String Username) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
