@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class NetworkClient {
-    private static final String serverAddress = "127.0.0.1";
+    private static final String serverAddress = "localhost";
     private static final int serverPort = 12345;
 
     public NetworkClient() {

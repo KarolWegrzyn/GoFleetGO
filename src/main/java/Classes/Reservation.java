@@ -17,7 +17,7 @@ public class Reservation {
 
     public enum ReservationStatus{
         active,
-        notActive
+        finished
     }
 
     static ReservationRepository reservationRepository = new ReservationRepository();
@@ -51,7 +51,7 @@ public class Reservation {
 //            Reservation.ReservationStatus status = Reservation.ReservationStatus.valueOf(resultSet.getString("Status"));
 //
 //            vehicleRepository.updateStatus(vehicleID, Vehicle.VehicleStatus.free);
-//            reservationRepository.updateStatus(id, ReservationStatus.notActive);
+//            reservationRepository.updateStatus(id, ReservationStatus.finished);
 //        }
 //    }
 

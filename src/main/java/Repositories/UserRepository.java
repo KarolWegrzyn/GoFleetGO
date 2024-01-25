@@ -7,7 +7,9 @@ import java.sql.*;
 
 public class UserRepository {
 
-    private static UI.User getUserByUsername(Connection connection, String userName) throws SQLException {
+
+
+    private static User getUserByUsername(Connection connection, String userName) throws SQLException {
         String query = "SELECT * FROM user WHERE Username = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, userName);
@@ -16,7 +18,7 @@ public class UserRepository {
                 if (resultSet.next()) {
                     int userId = resultSet.getInt("user_id");
                     String userPassword = resultSet.getString("password");
-                    return new UI.User(userId, userName, userPassword, 1,null);
+                    return new User(userId, userName, userPassword, 1,null);
                 }
             }
         }
@@ -74,7 +76,7 @@ public class UserRepository {
         }
     }
 
-    public static UI.User findUserByUsername(String Username) {
+    public static User findUserByUsername(String Username) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT * FROM User WHERE Username = ?")) {
@@ -88,7 +90,7 @@ public class UserRepository {
                 int companyID = resultSet.getInt("Company_ID");
                 String email = resultSet.getString("Email");
 
-                return new UI.User(id, username, password, companyID, email);
+                return new User(id, username, password, companyID, email);
             } else {
                 return null;
             }
