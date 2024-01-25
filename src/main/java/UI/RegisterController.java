@@ -88,6 +88,12 @@ public class RegisterController {
                 text_message.setText("Nazwa uzytkownika jest pusta!");
                 System.out.println("Nazwa uzytkownika jest pusta!");
                 areDataValid = false;
+            } else {
+                if (UserRepository.findUserByUsername(username) != null){
+                    text_message.setText("Nazwa uzytkownika jest juz zajeta!");
+                    System.out.println("Nazwa uzytkownika juz zejeta!");
+                    areDataValid = false;
+                }
             }
 
             if (areDataValid) {
