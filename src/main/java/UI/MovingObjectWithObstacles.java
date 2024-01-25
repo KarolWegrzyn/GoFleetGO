@@ -31,7 +31,6 @@ public class MovingObjectWithObstacles {
 
     private double totalDistance = 0.0;
 
-
     public Scene start() {
         Pane mapPane = new Pane();
 

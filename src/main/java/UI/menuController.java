@@ -1,8 +1,11 @@
 package UI;
 
 import Classes.Ride;
+import Classes.Vehicle;
 import DTO.ClientRequest;
 import DTO.ServerResponse;
+import Repositories.VehicleRepository;
+import Services.RideService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,12 +39,19 @@ public class menuController {
     private void changeToWypSam(ActionEvent event) {
         if (event.getSource().equals(button_wyp_sam)) {
             try {
-                Ride ride = new Ride();
-                ride.setRideID(1);
-                ride.setUserID(GlobalData.getUserId());
-                ride.setVehicleID(1);
+                Vehicle vehicle = VehicleRepository.findVehicleById(1);
+                //Do not forget about not null reservation
+                Ride ride = RideService.createNewRide(
+                        GlobalData.getUserId(),
+                        vehicle
+                );
+//
+//                ride.setRideID(1);
+//                ride.setUserID(GlobalData.getUserId());
+//                ride.setVehicleID(1);
 //                ride.setReservationID(1);
-                ride.setReservationID(null);
+//                ride.setReservationID(null);
+//                ride.setRouteID();
                 ClientRequest clientRequest = new ClientRequest();
                 clientRequest.setData(ride);
                 clientRequest.setAction("createNewRide");
