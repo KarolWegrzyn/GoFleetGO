@@ -2,25 +2,30 @@ package Classes;
 
 import Repositories.RideRepository;
 
+import java.io.Serializable;
+
 import static Repositories.ReservationRepository.findReservationById;
 import static Repositories.RouteRepository.updateRoute;
 import static Repositories.RouteRepository.createNewRoute;
 import static Repositories.UserRepository.findUserById;
 import static Repositories.VehicleRepository.findVehicleById;
 
-public class Ride {
+public class Ride implements Serializable {
     private int rideID;
     private int userID;
     private int vehicleID;
     private Integer reservationID;
     private int routeID;
 
-    public Ride(int rideID, int userID, int vehicleID, Integer reservationID, int routeID) {
+    public Ride(int rideID, int userID, int vehicleID, Integer reservationID, Integer routeID) {
         this.rideID = rideID;
         this.userID = userID;
         this.vehicleID = vehicleID;
         this.reservationID = reservationID;
         this.routeID = routeID;
+    }
+
+    public Ride() {
     }
 
     public static Ride createNewRide(int userID, int vehicleID, int reservationID) throws Exception {
@@ -37,7 +42,7 @@ public class Ride {
 
         int[] startingPosition = vehicle.Drive();
         int routeId = createNewRoute(startingPosition);
-        Ride createdRide = RideRepository.createNewRide(userID, vehicleID, reservationID, routeId);
+        Ride createdRide = RideRepository.createNewRide(userID, vehicleID, reservationID);
         return  createdRide;
     }
 
@@ -50,7 +55,7 @@ public class Ride {
         startingPosition[1] = vehicle.getColumn();
 
         int routeId = createNewRoute(startingPosition);
-        Ride createdRide = RideRepository.createNewRide(userID, vehicle.getVehicleID(), null, routeId);
+        Ride createdRide = RideRepository.createNewRide(userID, vehicle.getVehicleID(), null);
         vehicle.Drive();
         return createdRide;
     }

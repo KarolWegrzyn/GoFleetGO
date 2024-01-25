@@ -1,12 +1,17 @@
 package Repositories;
 
 import Classes.Ride;
+import Classes.Route;
 import Classes.Vehicle;
 import Managers.ConnectionManager;
 
 import java.sql.*;
 
 public class RideRepository {
+
+    public static void finishRide(Integer rideId, Route route) {
+
+    }
 
     public void insertRide(Ride ride) {
         try (Connection connection = ConnectionManager.getConnection();
@@ -30,12 +35,12 @@ public class RideRepository {
         }
     }
 
-    public static Ride createNewRide(int userId, int vehicleId, Integer reservationId, int routeId) {
+    public static Ride createNewRide(int userId, int vehicleId, Integer reservationId) {
         int generatedId = -1;
 
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO Ride (User_ID, Vehicle_ID, Reservation_ID, Route_ID) VALUES (?, ?, ?, ?)",
+                     "INSERT INTO Ride (User_ID, Vehicle_ID, Reservation_ID, Route_ID) VALUES (?, ?, ?, null)",
                      Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, vehicleId);
@@ -44,7 +49,6 @@ public class RideRepository {
             } else {
                 preparedStatement.setInt(3, reservationId);
             }
-            preparedStatement.setInt(4, routeId);
 
             int rowsAffected = preparedStatement.executeUpdate();
 
@@ -55,7 +59,7 @@ public class RideRepository {
                         generatedId = generatedKeys.getInt(1);
                         System.out.println("Ride inserted successfully. Generated ID: " + generatedId);
 
-                        return new Ride(generatedId, userId, vehicleId, reservationId, routeId);
+                        return new Ride(generatedId, userId, vehicleId, reservationId, -1);
                     } else {
                         System.out.println("Failed to retrieve generated ID.");
                     }
@@ -70,7 +74,7 @@ public class RideRepository {
         return null;
     }
 
-    public Ride findRideById(int rideID) {
+    public static Ride findRideById(Integer rideID, Route route) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT * FROM Ride WHERE Ride_ID = ?")) {
