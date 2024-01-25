@@ -59,7 +59,8 @@ CREATE TABLE `model` (
   `Brand` varchar(50) NOT NULL,
   `Engine` decimal(2,1) NOT NULL,
   `Fuel_capacity` decimal(4,2) NOT NULL,
-  `Year_of_production` date NOT NULL
+  `Year_of_production` date NOT NULL,
+  `Max_speed` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
@@ -328,22 +329,22 @@ COMMIT;
 --
 -- Inserting data
 --
-INSERT INTO model (Brand, Engine, Fuel_Capacity, Year_Of_Production) 
-VALUES 
-('Toyota Camry', 2.5, 60.0, '2022-05-15'),
-('Honda Civic', 1.8, 55.0, '2021-08-20'),
-('Ford Mustang', 5.0, 70.0, '2023-02-10'),
-('Chevrolet Silverado', 6.2, 80.0, '2022-11-05'),
-('Nissan Altima', 2.0, 58.0, '2023-06-30');
+INSERT INTO model (Brand, Engine, Fuel_Capacity, Year_Of_Production, Max_speed)
+VALUES
+('Toyota Camry', 2.5, 40.0, '2022-05-15', 140),
+('Honda Civic', 1.8, 50.0, '2021-08-20', 180),
+('Ford Mustang', 5.0, 60.0, '2023-02-10', 240),
+('Chevrolet Silverado', 6.2, 70.0, '2022-11-05', 280);
 
 INSERT INTO `subscription` (`Cost`, `Funds`) VALUES
 (29.99, 1000.00),
 (59.99, 2000.00);
 
 INSERT INTO vehicle (Model_ID, `Row`, `Column`, `Status`, `Fuel_Level`)
-VALUES (1,50,50,'free',40),
-       (2,100,50,'free',40),
-       (3,150,50,'free',40);
+VALUES (1,50,50,'free',20),
+       (2,100,50,'free',30),
+       (3,150,50,'free',40),
+       (4,200,50,'free',50);
 
 INSERT INTO  user (Username, Password, Company_ID, Email, Balance)
 VALUES ('1','A1',null, '1@gmail.com', 0);

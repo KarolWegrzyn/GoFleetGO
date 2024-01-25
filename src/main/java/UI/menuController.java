@@ -1,11 +1,5 @@
 package UI;
 
-import Classes.Ride;
-import Classes.Vehicle;
-import DTO.ClientRequest;
-import DTO.ServerResponse;
-import Repositories.VehicleRepository;
-import Services.RideService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import util.NetworkClient;
-import util.GlobalData;
-
-import java.util.ArrayList;
 
 public class menuController {
     @FXML
@@ -53,26 +43,26 @@ public class menuController {
     private void changeToWypSam(ActionEvent event) {
         if (event.getSource().equals(button_wyp_sam)) {
             try {
-                Vehicle vehicle = VehicleRepository.findVehicleById(1);
-                //Do not forget about not null reservation
-                Ride ride = RideService.createNewRide(
-                        GlobalData.getUserId(),
-                        vehicle
-                );
+//                Vehicle vehicle = VehicleRepository.findVehicleById(1);
+//                //Do not forget about not null reservation
+//                Ride ride = RideService.createNewRide(
+//                        GlobalData.getUserId(),
+//                        vehicle
+//                );
 //
+////
+//                Ride ride = new Ride();
 //                ride.setRideID(1);
 //                ride.setUserID(GlobalData.getUserId());
-//                ride.setVehicleID(1);
-//                ride.setReservationID(1);
+//                ride.setVehicleID(2);
 //                ride.setReservationID(null);
-//                ride.setRouteID();
-                ClientRequest clientRequest = new ClientRequest();
-                clientRequest.setData(ride);
-                clientRequest.setAction("createNewRide");
-
-                ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
-                Integer rideId = (Integer) serverResponse.getData();
-                GlobalData.setCurrentRideId(rideId);
+//                ClientRequest clientRequest = new ClientRequest();
+//                clientRequest.setData(ride);
+//                clientRequest.setAction("createNewRide");
+//
+//                ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
+//                Integer rideId = (Integer) serverResponse.getData();
+//                GlobalData.setCurrentRideId(rideId);
 
                 Stage stage = (Stage) borderPane_menu.getScene().getWindow();
                 stage.close();
@@ -81,7 +71,6 @@ public class menuController {
                 Stage stage1 = new Stage();
                 stage1.setScene(d.start());
                 stage1.show();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

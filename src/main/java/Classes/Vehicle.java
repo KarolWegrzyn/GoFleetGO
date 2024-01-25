@@ -1,18 +1,13 @@
 package Classes;
 
-import MapClasses.Map;
-import MapClasses.Position;
 import Repositories.VehicleRepository;
 
-import java.util.Random;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 
 public class Vehicle {
-    private int vehicleID;
+    private Integer vehicleID;
     private int modelID;
     private double row;
     private double column;

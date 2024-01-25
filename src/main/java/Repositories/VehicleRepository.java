@@ -58,6 +58,27 @@ public class VehicleRepository {
         }
     }
 
+    public static void updateFuelLevel(int vehicleID, double distance) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE vehicle SET Fuel_Level = Fuel_Level - ? WHERE Vehicle_ID = ?")) {
+
+            preparedStatement.setDouble(1, distance/200);
+            preparedStatement.setInt(2, vehicleID);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Vehicle Fuel Level updated successfully.");
+            } else {
+                System.out.println("Failed to update vehicle Fuel Level. Vehicle not found.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void updateLocation(int vehicleID, double newRow, double newColumn) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(

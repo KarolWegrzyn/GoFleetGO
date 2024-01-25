@@ -1,5 +1,12 @@
 package UI;
 
+import Classes.Ride;
+import Classes.Route;
+import DTO.ClientRequest;
+import DTO.EndRideData;
+import DTO.ServerResponse;
+import Repositories.RideRepository;
+import Services.RideService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,12 +22,13 @@ import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import util.GlobalData;
+import util.NetworkClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovingObjectWithObstacles {
-
     private static final double OBJECT_RADIUS = 20.0;
     private static final double OBJECT_SPEED_BLUE = 5.0;
     private static final double OBJECT_SPEED_GREEN = 2.5;
@@ -43,7 +51,16 @@ public class MovingObjectWithObstacles {
     private int id;
     Pane mapPane = new Pane();
 
-    public Scene start() {
+    //Delete afeter testing
+    Integer vehicleId = 1;
+    public Scene start() throws Exception {
+        ClientRequest clientRequest = new ClientRequest();
+        clientRequest.setData(vehicleId);
+        clientRequest.setPrivateToken(GlobalData.getUserId());
+
+        clientRequest.setAction("createNewRide");
+        ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
+
         initializeSummaryText();
 
         // Inicjalizacja etykiety na komunikat o kolizji
@@ -114,10 +131,7 @@ public class MovingObjectWithObstacles {
         // Obsługa zdarzeń klawiatury
         mapPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
 
-        Scene scene = new Scene(mapPane, 700, 500); // Zmiana rozmiarów sceny
-//        primaryStage.setTitle("Moving Object with Obstacles");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
+        Scene scene = new Scene(mapPane, 700, 500); // Zmiana rozmiarów scen
 
         // Ustawienie fokusu na mapie, aby obsługa zdarzeń klawiatury działała
         mapPane.requestFocus();
@@ -137,6 +151,19 @@ public class MovingObjectWithObstacles {
         endY = object.getCenterY();
         endDistance = totalDistance;
         journeyEnded = true; // Ustawienie flagi na true po zakończeniu przejazdu
+
+        ClientRequest clientRequest = new ClientRequest();
+        Route route = new Route();
+        route.setFinishRow(endX);
+        route.setFinishColumn(endY);
+        route.setDistance(endDistance);
+
+        clientRequest.setData(route);
+        clientRequest.setPrivateToken(GlobalData.getUserId());
+        clientRequest.setAction("endRide");
+
+        NetworkClient.sendRequest(clientRequest);
+
         hideAllObjects();
         showSummary();
     }
@@ -290,7 +317,6 @@ public class MovingObjectWithObstacles {
         }
     }
 
-
     private void changeColorAndSpeed(int colorIndex) {
         // Domyślnie ustaw kolor na zielony
         Color newColor = Color.GREEN;
@@ -338,8 +364,4 @@ public class MovingObjectWithObstacles {
     private double calculateDistance(double x1, double y1, double x2, double y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
-
-//    //public static void main(String[] args) {
-//        launch(args);
-//    }
 }

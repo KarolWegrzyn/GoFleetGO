@@ -12,6 +12,8 @@ public class Model {
     private double fuelCapacity;
     private Date yearOfProduction;
 
+    private double maxSpeed;
+
     public Model(int modelID, String brand, double engine, double fuelCapacity, Date yearOfProduction) {
         this.modelID = modelID;
         this.brand = brand;
@@ -74,6 +76,14 @@ public class Model {
         this.yearOfProduction = yearOfProduction;
     }
 
+    public double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(double maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
+
     @Override
     public String toString() {
         return "Model{" +
@@ -82,6 +92,7 @@ public class Model {
                 ", engine=" + engine +
                 ", fuelCapacity=" + fuelCapacity +
                 ", yearOfProduction=" + yearOfProduction +
+                ", maxSpeed=" + maxSpeed +
                 '}';
     }
 }

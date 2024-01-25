@@ -1,12 +1,17 @@
 package TCP;
 
 import Classes.Ride;
+import Classes.Route;
 import Classes.User;
+import Classes.Vehicle;
 import DTO.ClientRequest;
 import DTO.EndRideData;
 import DTO.LoginData;
 import DTO.ServerResponse;
 import Repositories.RideRepository;
+import Repositories.RouteRepository;
+import Repositories.VehicleRepository;
+import Services.RideService;
 
 import java.io.*;
 import java.net.Socket;
@@ -37,22 +42,25 @@ public class ClientHandler implements Runnable {
                 }
 
                 case "createNewRide": {
-                    Ride rideData = (Ride) clientRequest.getData();
-                    Ride newRide;
-                    if (rideData.getReservationID() == null){
-                        newRide = RideRepository.createNewRide(rideData.getUserID(), rideData.getVehicleID(), null, rideData.getRouteID());
-                    } else {
-                        newRide = RideRepository.createNewRide(rideData.getUserID(), rideData.getVehicleID(), rideData.getReservationID(), rideData.getRouteID());
+                    Integer vehicleId = (Integer) clientRequest.getData();
+                    Integer userId = clientRequest.getPrivateToken();
 
-                    }
+                    VehicleRepository.updateStatus(vehicleId, Vehicle.VehicleStatus.inUse);
+                    Vehicle vehicle = VehicleRepository.findVehicleById(vehicleId);
+                    Integer newRouteId = RouteRepository.createNewRoute(vehicle.getRow(), vehicle.getColumn());
+
+                    Ride newRide = RideRepository.createNewRide(userId, vehicleId, null, newRouteId);
+
+
+
                     assert newRide != null;
                     serverResponse.setData(newRide.getRideID());
                     break;
                 }
 
                 case "endRide": {
-                    EndRideData endRideData = (EndRideData) clientRequest.getData();
-                    RideRepository.finishRide(endRideData.getRideId(), endRideData.getRoute());
+                    Route route = (Route) clientRequest.getData();
+                    RideService.finishRide(route, clientRequest.getPrivateToken());
                     break;
                 }
 

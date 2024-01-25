@@ -103,7 +103,7 @@ public class ReservationRepository {
     public void updateStatus(int reservationID, Reservation.ReservationStatus status) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "UPDATE Reservation SET Status = '?' WHERE Reservation_ID = '?'")) {
+                     "UPDATE Reservation SET Status = ? WHERE Reservation_ID = ?")) {
 
             preparedStatement.setString(1, String.valueOf(status));
             preparedStatement.setInt(2, reservationID);

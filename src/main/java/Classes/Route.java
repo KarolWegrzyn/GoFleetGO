@@ -8,25 +8,11 @@ import java.sql.SQLException;
 
 public class Route implements Serializable {
     private int routeID;
-    private int startRow;
-    private int startColumn;
-    private int finishRow;
-    private int finishColumn;
+    private double startRow;
+    private double startColumn;
+    private double finishRow;
+
     private double distance;
-
-    public Route(int routeID, int startRow, int startColumn, int finishRow, int finishColumn, double distance) {
-        this.routeID = routeID;
-        this.startRow = startRow;
-        this.startColumn = startColumn;
-        this.finishRow = finishRow;
-        this.finishColumn = finishColumn;
-        this.distance = distance;
-    }
-
-    public Route() {
-    }
-    // Getters and setters
-
     public int getRouteID() {
         return routeID;
     }
@@ -35,13 +21,37 @@ public class Route implements Serializable {
         this.routeID = routeID;
     }
 
-    @Override
-    public String toString() {
-        return "Route{" +
-                "routeID=" + routeID +
-                '}';
+    public double getStartRow() {
+        return startRow;
     }
 
+    public void setStartRow(double startRow) {
+        this.startRow = startRow;
+    }
+
+    public double getStartColumn() {
+        return startColumn;
+    }
+
+    public void setStartColumn(double startColumn) {
+        this.startColumn = startColumn;
+    }
+
+    public double getFinishRow() {
+        return finishRow;
+    }
+
+    public void setFinishRow(double finishRow) {
+        this.finishRow = finishRow;
+    }
+
+    public double getFinishColumn() {
+        return finishColumn;
+    }
+
+    public void setFinishColumn(double finishColumn) {
+        this.finishColumn = finishColumn;
+    }
 
     public double getDistance() {
         return distance;
@@ -51,36 +61,18 @@ public class Route implements Serializable {
         this.distance = distance;
     }
 
-    public int getStartRow() {
-        return startRow;
-    }
+    private double finishColumn;
 
-    public void setStartRow(int startRow) {
+    public Route(int routeID, double startRow, double startColumn, double finishRow, double finishColumn, double distance) {
+        this.routeID = routeID;
         this.startRow = startRow;
-    }
-
-    public int getStartColumn() {
-        return startColumn;
-    }
-
-    public void setStartColumn(int startColumn) {
         this.startColumn = startColumn;
-    }
-
-    public int getFinishRow() {
-        return finishRow;
-    }
-
-    public void setFinishRow(int finishRow) {
         this.finishRow = finishRow;
-    }
-
-    public int getFinishColumn() {
-        return finishColumn;
-    }
-
-    public void setFinishColumn(int finishColumn) {
         this.finishColumn = finishColumn;
+        this.distance = distance;
     }
+
+    public Route(){};
+
 }
 
