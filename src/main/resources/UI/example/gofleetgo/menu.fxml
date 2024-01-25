@@ -15,25 +15,25 @@
                   <Font size="63.0" />
                </font>
             </Label>
+            <Button fx:id="button_wyp_sam" layoutY="1.0" mnemonicParsing="false" onAction="#changeToWypSam" prefHeight="36.0" prefWidth="11.0" style="-fx-background-color: transparent;" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </top>
    <right>
       <AnchorPane prefHeight="379.0" prefWidth="704.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="butoon_zar_przejazd" layoutX="178.0" layoutY="67.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="344.0" style="-fx-background-color: #0598ff;" text="Zarezerwuj Przejazd" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="butoon_zar_sam" layoutX="160.0" layoutY="94.0" mnemonicParsing="false" onAction="#changeToZarSam" prefHeight="55.0" prefWidth="381.0" style="-fx-background-color: #0598ff;" text="Zarezerwuj Pojazd" textAlignment="CENTER" textFill="WHITE">
                <font>
-                  <Font size="16.0" />
+                  <Font size="20.0" />
                </font>
             </Button>
-            <Button fx:id="button_wyp_sam" layoutX="178.0" layoutY="142.0" mnemonicParsing="false" onAction="#changeToWypSam" prefHeight="36.0" prefWidth="344.0" style="-fx-background-color: #0598ff;" text="Wypożycz Samochód" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="button_hist_przejazd" layoutX="162.0" layoutY="182.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="378.0" style="-fx-background-color: #0598ff;" text="Historia Przejazdów" textAlignment="CENTER" textFill="WHITE">
                <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="button_hist_przejazd" layoutX="178.0" layoutY="218.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="344.0" style="-fx-background-color: #0598ff;" text="Historia Przejazdów" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font size="16.0" />
+                  <Font size="20.0" />
                </font>
             </Button>
          </children>

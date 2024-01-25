@@ -40,6 +40,7 @@ public class MovingObjectWithObstacles {
     private boolean journeyEnded = false;
     private Text summaryText;
     private double totalDistance = 0.0;
+    private int id;
     Pane mapPane = new Pane();
 
     public Scene start() {
@@ -75,8 +76,14 @@ public class MovingObjectWithObstacles {
         colorLabel.setLayoutY(460);
         mapPane.getChildren().add(colorLabel);
 
+
+
         // Inicjalizacja obiektu (kółka)
+        //id=3;
         object = new Circle(OBJECT_RADIUS, Color.GREEN); // Startujemy od koloru zielonego
+        //setColorById(3);
+
+        //changeColorAndSpeed(3);
         //placeObjectOnMap(50, 50); // Początkowa pozycja obiektu
         setInitialPosition(50,50);
         mapPane.getChildren().add(object);
@@ -117,6 +124,10 @@ public class MovingObjectWithObstacles {
         return scene ;
     }
 
+    public void setId(int id_)
+    {
+        id = id_;
+    }
     public void setInitialPosition(double x, double y) {
         placeObjectOnMap(x, y);
     }
@@ -229,6 +240,9 @@ public class MovingObjectWithObstacles {
             double newY = object.getCenterY();
 
             double speed;
+
+            changeColorAndSpeed(id);
+
             if (object.getFill() == Color.BLUE) {
                 speed = OBJECT_SPEED_BLUE;
             } else if (object.getFill() == Color.RED) {
@@ -254,7 +268,7 @@ public class MovingObjectWithObstacles {
                     break;
                 case R:
                     // Zmiana koloru po naciśnięciu klawisza "R"
-                    changeColorAndSpeed();
+                    //changeColorAndSpeed();
                     break;
                 default:
                     // Inne klawisze można obsłużyć według potrzeb
@@ -277,16 +291,39 @@ public class MovingObjectWithObstacles {
     }
 
 
-    private void changeColorAndSpeed() {
-        if (object.getFill() == Color.BLUE) {
-            object.setFill(Color.RED);
-        } else if (object.getFill() == Color.RED) {
-            object.setFill(Color.YELLOW);
-        } else if (object.getFill() == Color.YELLOW) {
-            object.setFill(Color.GREEN);
-        } else {
-            object.setFill(Color.BLUE);
+    private void changeColorAndSpeed(int colorIndex) {
+        // Domyślnie ustaw kolor na zielony
+        Color newColor = Color.GREEN;
+        double newSpeed = OBJECT_SPEED_GREEN;
+
+        // Wybierz kolor i prędkość na podstawie przekazanego indeksu
+        switch (colorIndex) {
+            case 0:
+                newColor = Color.GREEN;
+                newSpeed = OBJECT_SPEED_GREEN;
+                break;
+            case 1:
+                newColor = Color.BLUE;
+                newSpeed = OBJECT_SPEED_BLUE;
+                break;
+            case 2:
+                newColor = Color.RED;
+                newSpeed = OBJECT_SPEED_RED;
+                break;
+            case 3:
+                newColor = Color.YELLOW;
+                newSpeed = OBJECT_SPEED_YELLOW;
+                break;
+            default:
+                // Domyślnie ustaw kolor na zielony, gdy indeks jest nieprawidłowy
+                newColor = Color.GREEN;
+                newSpeed = OBJECT_SPEED_GREEN;
+                break;
         }
+
+        object.setFill(newColor); // Ustaw nowy kolor
+        updateColorLabel(newColor); // Aktualizuj etykietę z kolorem
+        // Dodatkowo można by tutaj ustawić nową prędkość, jeśli to potrzebne
     }
 
     private boolean checkCollision(double x, double y) {
