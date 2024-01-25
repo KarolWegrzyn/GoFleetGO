@@ -1,11 +1,12 @@
 package Classes;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Route {
+public class Route implements Serializable {
     private int routeID;
     private int startRow;
     private int startColumn;
@@ -22,6 +23,8 @@ public class Route {
         this.distance = distance;
     }
 
+    public Route() {
+    }
     // Getters and setters
 
     public int getRouteID() {

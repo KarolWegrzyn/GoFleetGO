@@ -7,6 +7,23 @@ import java.sql.*;
 
 public class UserRepository {
 
+
+
+    private static User getUserByUsername(Connection connection, String userName) throws SQLException {
+        String query = "SELECT * FROM user WHERE Username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int userId = resultSet.getInt("user_id");
+                    String userPassword = resultSet.getString("password");
+                    return new User(userId, userName, userPassword, 1,null);
+                }
+            }
+        }
+        return null;
+    }
     public static void insertUser(User user) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
@@ -34,8 +51,8 @@ public class UserRepository {
             e.printStackTrace();
         }
     }
-
     public static void insertUser(String username, String password, String email) {
+
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "INSERT INTO User (Username, Password, Company_ID, Email, Balance) VALUES (?, ?, ?, ?, ?)")) {
@@ -59,10 +76,10 @@ public class UserRepository {
         }
     }
 
-    public UI.User findUserByUsername(String Username) {
+    public static User findUserByUsername(String Username) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM User WHERE Username = '?'")) {
+                     "SELECT * FROM User WHERE Username = ?")) {
             preparedStatement.setString(1, Username);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -73,7 +90,9 @@ public class UserRepository {
                 int companyID = resultSet.getInt("Company_ID");
                 String email = resultSet.getString("Email");
 
-                return new UI.User(id, username, password, companyID, email);
+                return new User(id, username, password, companyID, email);
+            } else {
+                return null;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,6 +100,7 @@ public class UserRepository {
 
         return null;
     }
+
     public static User findUserById(int userID) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(

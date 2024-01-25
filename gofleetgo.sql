@@ -102,7 +102,8 @@ CREATE TABLE `ride` (
   `User_ID` int(10) NOT NULL,
   `Vehicle_ID` int(10) NOT NULL,
   `Reservation_ID` int(10),
-  `Route_ID` int(10) NOT NULL
+  `Route_ID` int(10) NOT NULL,
+  `State` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

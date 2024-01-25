@@ -2,20 +2,27 @@ package Classes;
 
 import Repositories.RideRepository;
 
+import java.io.Serializable;
+
 import static Repositories.ReservationRepository.findReservationById;
 import static Repositories.RouteRepository.updateRoute;
 import static Repositories.RouteRepository.createNewRoute;
 import static Repositories.UserRepository.findUserById;
 import static Repositories.VehicleRepository.findVehicleById;
 
-public class Ride {
+public class Ride implements Serializable {
     private int rideID;
     private int userID;
     private int vehicleID;
     private Integer reservationID;
     private int routeID;
 
-    public Ride(int rideID, int userID, int vehicleID, Integer reservationID, int routeID) {
+    public enum RideStatus{
+        active,
+        finished
+    }
+
+    public Ride(int rideID, int userID, int vehicleID, Integer reservationID, Integer routeID) {
         this.rideID = rideID;
         this.userID = userID;
         this.vehicleID = vehicleID;
@@ -23,7 +30,10 @@ public class Ride {
         this.routeID = routeID;
     }
 
-    public static Ride createNewRide(int userID, int vehicleID, int reservationID) throws Exception {
+    public Ride() {
+    }
+
+    public static Ride createNewRide(int userID, int vehicleID, Integer reservationID) throws Exception {
         User user = findUserById(userID);
         assert user != null;
         Vehicle vehicle = findVehicleById(vehicleID);
@@ -91,11 +101,11 @@ public class Ride {
         this.vehicleID = vehicleID;
     }
 
-    public int getReservationID() {
+    public Integer getReservationID() {
         return reservationID;
     }
 
-    public void setReservationID(int reservationID) {
+    public void setReservationID(Integer reservationID) {
         this.reservationID = reservationID;
     }
 
