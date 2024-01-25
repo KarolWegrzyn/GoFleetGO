@@ -67,7 +67,8 @@ public class MovingObjectWithObstacles {
 
         // Inicjalizacja obiektu (kółka)
         object = new Circle(OBJECT_RADIUS, Color.GREEN); // Startujemy od koloru zielonego
-        placeObjectOnMap(50, 50); // Początkowa pozycja obiektu
+        //placeObjectOnMap(50, 50); // Początkowa pozycja obiektu
+        setInitialPosition(50,50);
         mapPane.getChildren().add(object);
 
         // Inicjalizacja przeszkód (kwadratów)
@@ -104,6 +105,10 @@ public class MovingObjectWithObstacles {
         // Ustawienie fokusu na mapie, aby obsługa zdarzeń klawiatury działała
         mapPane.requestFocus();
         return scene ;
+    }
+
+    public void setInitialPosition(double x, double y) {
+        placeObjectOnMap(x, y);
     }
 
     private Rectangle createObstacle(double x, double y, double width, double height) {
