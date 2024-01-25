@@ -341,17 +341,9 @@ INSERT INTO `subscription` (`Cost`, `Funds`) VALUES
 (59.99, 2000.00);
 
 INSERT INTO vehicle (Model_ID, `Row`, `Column`, `Status`, `Fuel_Level`)
-SELECT
-  FLOOR(RAND() * 5) + 1,
-  2,
-  2,
-  'disabled',  
-  m.Fuel_capacity
-FROM
-  model m
-CROSS JOIN (SELECT 1 AS n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
-            UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) numbers
-LIMIT 10;
+VALUES (1,50,50,'active',40),
+       (2,100,50,'active',40),
+       (3,150,50,'active',40);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
