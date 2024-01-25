@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 import util.NetworkClient;
 import util.GlobalData;
 
+
+
 public class MainController {
     @FXML
     private BorderPane borderPane;
@@ -50,6 +52,8 @@ public class MainController {
                 username = text_us_log.getText();
                 password = text_pas.getText();
 
+
+                GetUserExample userExample = new GetUserExample();
                 ClientRequest clientRequest = new ClientRequest();
                 LoginData loginData = new LoginData(username, password);
 

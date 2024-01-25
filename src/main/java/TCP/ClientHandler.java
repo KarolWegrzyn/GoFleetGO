@@ -1,5 +1,6 @@
 package TCP;
 
+
 import Classes.Ride;
 import DTO.ClientRequest;
 import DTO.EndRideData;
@@ -25,6 +26,7 @@ public class ClientHandler implements Runnable {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream())) {
             ClientRequest clientRequest = (ClientRequest) objectInputStream.readObject();
+
             ServerResponse serverResponse = new ServerResponse();
             if (clientRequest.getAction().equals("login")) {
                 LoginData data = (LoginData) clientRequest.getData();
@@ -40,6 +42,7 @@ public class ClientHandler implements Runnable {
                 RideRepository.finishRide(endRideData.getRideId(), endRideData.getRoute());
             }
             objectOutputStream.writeObject(serverResponse);
+
 
         } catch (Exception e) {
             e.printStackTrace();
