@@ -1,6 +1,8 @@
 package UI;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -8,7 +10,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.geometry.Pos;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +34,16 @@ public class MovingObjectWithObstacles {
     private Label yLabel;
     private Label distanceLabel;
     private Label colorLabel;
-
+    private double endX;
+    private double endY;
+    private double endDistance;
+    private boolean journeyEnded = false;
+    private Text summaryText;
     private double totalDistance = 0.0;
+    Pane mapPane = new Pane();
 
     public Scene start() {
-        Pane mapPane = new Pane();
+        initializeSummaryText();
 
         // Inicjalizacja etykiety na komunikat o kolizji
         collisionLabel = new Label();
@@ -110,6 +121,60 @@ public class MovingObjectWithObstacles {
         placeObjectOnMap(x, y);
     }
 
+    public void endJourney() {
+        endX = object.getCenterX();
+        endY = object.getCenterY();
+        endDistance = totalDistance;
+        journeyEnded = true; // Ustawienie flagi na true po zakończeniu przejazdu
+        hideAllObjects();
+        showSummary();
+    }
+    private void initializeSummaryText() {
+        summaryText = new Text();
+        summaryText.setLayoutX(200); // Ustawienie połowy szerokości sceny
+        summaryText.setLayoutY(200); // Ustawienie połowy wysokości sceny
+        summaryText.setFont(new Font(20)); // Ustawienie większej czcionki
+        summaryText.setTextAlignment(TextAlignment.CENTER); // Wyśrodkowanie tekstu
+        summaryText.textAlignmentProperty(); // Wyśrodkowanie tekstu
+        mapPane.getChildren().add(summaryText);
+        summaryText.setVisible(false); // Początkowo tekst jest niewidoczny
+    }
+
+    private void showSummary() {
+        String summary = String.format("Podsumowanie trasy:\n \n" +
+                "Początkowa pozycja: (%.2f, %.2f)\n" +
+                "Końcowa pozycja: (%.2f, %.2f)\n" +
+                "Przebyty dystans: %.2f", 50.0, 50.0, endX, endY, endDistance);
+
+        summaryText.setText(summary);
+        summaryText.setVisible(true);
+    }
+    private void hideAllObjects() {
+        object.setVisible(false); // Ukryj kółko
+
+        for (Rectangle obstacle : obstacles) {
+            obstacle.setVisible(false); // Ukryj przeszkody
+        }
+
+        collisionLabel.setVisible(false); // Ukryj etykietę o kolizji
+        xLabel.setVisible(false); // Ukryj etykietę X
+        yLabel.setVisible(false); // Ukryj etykietę Y
+        distanceLabel.setVisible(false); // Ukryj etykietę z przebytą drogą
+        colorLabel.setVisible(false); // Ukryj etykietę z kolorem
+    }
+
+    public double getEndX() {
+        return endX;
+    }
+
+    public double getEndY() {
+        return endY;
+    }
+
+    public double getEndDistance() {
+        return endDistance;
+    }
+
     private Rectangle createObstacle(double x, double y, double width, double height) {
         Rectangle obstacle = new Rectangle(x, y, width, height);
         obstacle.setFill(Color.RED);
@@ -148,55 +213,69 @@ public class MovingObjectWithObstacles {
     }
 
     private void handleKeyPress(KeyCode code) {
-        double newX = object.getCenterX();
-        double newY = object.getCenterY();
-
-        double speed;
-        if (object.getFill() == Color.BLUE) {
-            speed = OBJECT_SPEED_BLUE;
-        } else if (object.getFill() == Color.RED) {
-            speed = OBJECT_SPEED_RED;
-        } else if (object.getFill() == Color.YELLOW) {
-            speed = OBJECT_SPEED_YELLOW;
-        } else {
-            speed = OBJECT_SPEED_GREEN; // Dla zielonego
+        if (journeyEnded) {
+            return; // Jeśli przejazd został zakończony, przerwij obsługę klawisza
         }
 
-        switch (code) {
-            case UP:
-                newY -= speed;
-                break;
-            case DOWN:
-                newY += speed;
-                break;
-            case LEFT:
-                newX -= speed;
-                break;
-            case RIGHT:
-                newX += speed;
-                break;
-            case R:
-                // Zmiana koloru po naciśnięciu klawisza "R"
-                changeColorAndSpeed();
-                break;
-            default:
-                // Inne klawisze można obsłużyć według potrzeb
-                break;
-        }
-
-        // Sprawdzenie kolizji z przeszkodami
-        if (!checkCollision(newX, newY)) {
-            double distance = calculateDistance(object.getCenterX(), object.getCenterY(), newX, newY);
-            object.setCenterX(newX);
-            object.setCenterY(newY);
-            collisionLabel.setText(""); // Wyczyszczenie komunikatu o kolizji
-            updatePositionLabels(); // Aktualizacja etykiet z położeniem
-            updateDistanceLabel(distance); // Aktualizacja etykiety z przebytą drogą
-            updateColorLabel((Color) object.getFill()); // Aktualizacja etykiety z kolorem
+        if (code == KeyCode.K) {
+            // Zakończ przejazd po wciśnięciu klawisza 'k'
+            endJourney();
+            System.out.println("Końcowy Y:"+endY);
+            System.out.println("Końcowy X:"+endX);
+            System.out.println("Końcowy Dystans:"+endDistance);
         } else {
-            collisionLabel.setText("Stłuczka!"); // Komunikat o kolizji
+            // Reszta kodu obsługująca ruch samochodu
+            double newX = object.getCenterX();
+            double newY = object.getCenterY();
+
+            double speed;
+            if (object.getFill() == Color.BLUE) {
+                speed = OBJECT_SPEED_BLUE;
+            } else if (object.getFill() == Color.RED) {
+                speed = OBJECT_SPEED_RED;
+            } else if (object.getFill() == Color.YELLOW) {
+                speed = OBJECT_SPEED_YELLOW;
+            } else {
+                speed = OBJECT_SPEED_GREEN; // Dla zielonego
+            }
+
+            switch (code) {
+                case UP:
+                    newY -= speed;
+                    break;
+                case DOWN:
+                    newY += speed;
+                    break;
+                case LEFT:
+                    newX -= speed;
+                    break;
+                case RIGHT:
+                    newX += speed;
+                    break;
+                case R:
+                    // Zmiana koloru po naciśnięciu klawisza "R"
+                    changeColorAndSpeed();
+                    break;
+                default:
+                    // Inne klawisze można obsłużyć według potrzeb
+                    break;
+            }
+
+            // Sprawdzenie kolizji z przeszkodami
+            if (!checkCollision(newX, newY)) {
+                double distance = calculateDistance(object.getCenterX(), object.getCenterY(), newX, newY);
+                object.setCenterX(newX);
+                object.setCenterY(newY);
+                collisionLabel.setText(""); // Wyczyszczenie komunikatu o kolizji
+                updatePositionLabels(); // Aktualizacja etykiet z położeniem
+                updateDistanceLabel(distance); // Aktualizacja etykiety z przebytą drogą
+                updateColorLabel((Color) object.getFill()); // Aktualizacja etykiety z kolorem
+            } else {
+                collisionLabel.setText("Stłuczka!"); // Komunikat o kolizji
+            }
         }
     }
+
 
     private void changeColorAndSpeed() {
         if (object.getFill() == Color.BLUE) {
