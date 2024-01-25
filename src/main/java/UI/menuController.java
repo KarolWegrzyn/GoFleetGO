@@ -1,18 +1,29 @@
 package UI;
 
 import Classes.Ride;
+import Classes.Vehicle;
 import DTO.ClientRequest;
 import DTO.ServerResponse;
+import Repositories.VehicleRepository;
+import Services.RideService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import util.NetworkClient;
 import util.GlobalData;
+
+import java.util.ArrayList;
 
 public class menuController {
     @FXML
@@ -28,12 +39,19 @@ public class menuController {
     private void changeToWypSam(ActionEvent event) {
         if (event.getSource().equals(button_wyp_sam)) {
             try {
-                Ride ride = new Ride();
-                ride.setRideID(1);
-                ride.setUserID(GlobalData.getUserId());
-                ride.setVehicleID(1);
+                Vehicle vehicle = VehicleRepository.findVehicleById(1);
+                //Do not forget about not null reservation
+                Ride ride = RideService.createNewRide(
+                        GlobalData.getUserId(),
+                        vehicle
+                );
+//
+//                ride.setRideID(1);
+//                ride.setUserID(GlobalData.getUserId());
+//                ride.setVehicleID(1);
 //                ride.setReservationID(1);
-                ride.setReservationID(null);
+//                ride.setReservationID(null);
+//                ride.setRouteID();
                 ClientRequest clientRequest = new ClientRequest();
                 clientRequest.setData(ride);
                 clientRequest.setAction("createNewRide");
@@ -44,12 +62,13 @@ public class menuController {
 
                 Stage stage = (Stage) borderPane_menu.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/example/gofleetgo/wypozycz_samochod.fxml"));
-                Parent root = (Parent) fxmlLoader.load();
+                MovingObjectWithObstacles d = new MovingObjectWithObstacles();
                 Stage stage1 = new Stage();
-                stage1.setScene(new Scene(root));
-                stage1.setTitle("GoFleetGo");
+                stage1.setScene(d.start());
                 stage1.show();
+
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

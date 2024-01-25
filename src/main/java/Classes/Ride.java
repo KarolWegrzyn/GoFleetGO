@@ -33,48 +33,6 @@ public class Ride implements Serializable {
     public Ride() {
     }
 
-    public static Ride createNewRide(int userID, int vehicleID, Integer reservationID) throws Exception {
-        User user = findUserById(userID);
-        assert user != null;
-        Vehicle vehicle = findVehicleById(vehicleID);
-        assert vehicle != null;
-        Reservation reservation = findReservationById(reservationID);
-        assert reservation != null;
-
-        if (reservation.getUserID() != userID){
-            throw new Exception("createNewRideException: userId and userId from reservation are not the same");
-        }
-
-        int[] startingPosition = vehicle.Drive();
-        int routeId = createNewRoute(startingPosition);
-        Ride createdRide = RideRepository.createNewRide(userID, vehicleID, reservationID, routeId);
-        return  createdRide;
-    }
-
-    public static Ride createNewRide(int userID, Vehicle vehicle) throws Exception {
-        User user = findUserById(userID);
-        assert user != null;
-
-        int[] startingPosition = new int[2];
-        startingPosition[0] = vehicle.getRow();
-        startingPosition[1] = vehicle.getColumn();
-
-        int routeId = createNewRoute(startingPosition);
-        Ride createdRide = RideRepository.createNewRide(userID, vehicle.getVehicleID(), null, routeId);
-        vehicle.Drive();
-        return createdRide;
-    }
-
-    public static void stopRide(Ride ride, Vehicle vehicle) {
-
-        int[] finishPosition = new int[2];
-        finishPosition[0] = vehicle.getRow();
-        finishPosition[1] = vehicle.getColumn();
-
-        vehicle.StopDrive();
-        updateRoute(ride.routeID,finishPosition[0], finishPosition[1], vehicle.getDistance());
-        System.out.println("vehicle finished at: " + finishPosition[0] + ", " + finishPosition[1] + " | with distance: " + vehicle.getDistance());
-    }
     // Getters and setters
 
     public int getRideID() {
