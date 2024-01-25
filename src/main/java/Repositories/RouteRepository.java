@@ -49,13 +49,13 @@ public class RouteRepository {
         return null;
     }
 
-    public static void updateRoute(int routeID, int finishRow, int finishColumn, int distance) {
+    public static void updateRoute(int routeID, double finishRow, double finishColumn, int distance) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "UPDATE Route SET `Finish_Row` = ?, `Finish_Column` = ?, `Distance` = ? WHERE Route_ID = ?")) {
 
-            preparedStatement.setInt(1, finishRow);
-            preparedStatement.setInt(2, finishColumn);
+            preparedStatement.setDouble(1, finishRow);
+            preparedStatement.setDouble(2, finishColumn);
             preparedStatement.setInt(3, distance);
             preparedStatement.setInt(4, routeID);
 
@@ -72,15 +72,15 @@ public class RouteRepository {
         }
     }
 
-    public static int createNewRoute(int[] startPoint) {
+    public static int createNewRoute(double[] startPoint) {
         int generatedId = -1;
 
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "INSERT INTO Route (Start_Row, Start_Column, Finish_Row, Finish_Column, Distance) VALUES (?, ?, ?, ?, ?)",
                      Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setInt(1, startPoint[0]);
-            preparedStatement.setInt(2, startPoint[1]);
+            preparedStatement.setDouble(1, startPoint[0]);
+            preparedStatement.setDouble(2, startPoint[1]);
             preparedStatement.setNull(3, java.sql.Types.INTEGER);
             preparedStatement.setNull(4, java.sql.Types.INTEGER);
             preparedStatement.setNull(5, java.sql.Types.INTEGER);

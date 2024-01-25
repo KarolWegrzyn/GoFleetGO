@@ -172,8 +172,8 @@ CREATE TABLE `user` (
 CREATE TABLE `vehicle` (
   `Vehicle_ID` int(10) NOT NULL,
   `Model_ID` int(10) NOT NULL,
-  `Row` int(10) NOT NULL,
-  `Column` int(10) NOT NULL,
+  `Row` double NOT NULL,
+  `Column` double NOT NULL,
   `Status` varchar(10) NOT NULL,
   `Fuel_Level` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -341,9 +341,12 @@ INSERT INTO `subscription` (`Cost`, `Funds`) VALUES
 (59.99, 2000.00);
 
 INSERT INTO vehicle (Model_ID, `Row`, `Column`, `Status`, `Fuel_Level`)
-VALUES (1,50,50,'active',40),
-       (2,100,50,'active',40),
-       (3,150,50,'active',40);
+VALUES (1,50,50,'free',40),
+       (2,100,50,'free',40),
+       (3,150,50,'free',40);
+
+INSERT INTO  user (Username, Password, Company_ID, Email, Balance)
+VALUES ('1','A1',null, '1@gmail.com', 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

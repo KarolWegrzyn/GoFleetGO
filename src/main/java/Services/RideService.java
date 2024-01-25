@@ -18,7 +18,7 @@ public class RideService {
         User user = findUserById(userID);
         assert user != null;
 
-        int[] startingPosition = new int[2];
+        double[] startingPosition = new double[2];
         startingPosition[0] = vehicle.getRow();
         startingPosition[1] = vehicle.getColumn();
 
@@ -39,7 +39,7 @@ public class RideService {
             throw new Exception("createNewRideException: userId and userId from reservation are not the same");
         }
 
-        int[] startingPosition = new int[2];
+        double[] startingPosition = new double[2];
         startingPosition[0] = vehicle.getRow();
         startingPosition[1] = vehicle.getColumn();
 
@@ -50,7 +50,7 @@ public class RideService {
 
     public static void stopRide(Ride ride, Vehicle vehicle) {
 
-        int[] finishPosition = new int[2];
+        double[] finishPosition = new double[2];
         finishPosition[0] = vehicle.getRow();
         finishPosition[1] = vehicle.getColumn();
 

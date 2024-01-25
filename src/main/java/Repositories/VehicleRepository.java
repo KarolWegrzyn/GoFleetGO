@@ -13,30 +13,6 @@ import java.time.format.DateTimeFormatter;
 import static Managers.ConnectionManager.getConnection;
 
 public class VehicleRepository {
-
-    public void insertVehicle(Vehicle vehicle) {
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO Vehicle (Model_ID, Row, Column, Status, fuel_level) VALUES (?, ?, ?, ?, ?)")) {
-            preparedStatement.setInt(1, vehicle.getModelID());
-            preparedStatement.setInt(2, vehicle.getRow());
-            preparedStatement.setInt(3, vehicle.getColumn());
-            preparedStatement.setInt(4, vehicle.getColumn());
-            preparedStatement.setInt(5, vehicle.getColumn());
-
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Vehicle inserted successfully.");
-            } else {
-                System.out.println("Failed to insert vehicle.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static Vehicle findVehicleById(int vehicleID) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
@@ -47,8 +23,8 @@ public class VehicleRepository {
             if (resultSet.next()) {
                 int id = resultSet.getInt("Vehicle_ID");
                 int modelID = resultSet.getInt("Model_ID");
-                int row = resultSet.getInt("Row");
-                int column = resultSet.getInt("Column");
+                double row = resultSet.getDouble("Row");
+                double column = resultSet.getDouble("Column");
                 Vehicle.VehicleStatus status = Vehicle.VehicleStatus.valueOf(resultSet.getString("Status"));
                 float fuelLevel = resultSet.getFloat("fuel_level");
 
@@ -82,13 +58,13 @@ public class VehicleRepository {
         }
     }
 
-    public static void updateLocation(int vehicleID, int newRow, int newColumn) {
+    public static void updateLocation(int vehicleID, double newRow, double newColumn) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "UPDATE vehicle SET `Row` = ?, `Column` = ? WHERE Vehicle_ID = ?")) {
 
-            preparedStatement.setInt(1, newRow);
-            preparedStatement.setInt(2, newColumn);
+            preparedStatement.setDouble(1, newRow);
+            preparedStatement.setDouble(2, newColumn);
             preparedStatement.setInt(3, vehicleID);
 
             int rowsAffected = preparedStatement.executeUpdate();

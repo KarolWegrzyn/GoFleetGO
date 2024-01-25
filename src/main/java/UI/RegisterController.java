@@ -58,7 +58,7 @@ public class RegisterController {
             }
 
             //check password
-            if(pass == null) {
+            if(pass == null || pass.isBlank()) {
                 text_message.setText("Hasło jest puste!");
                 System.out.println("Hasło jest puste!");
                 areDataValid = false;
