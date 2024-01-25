@@ -1,4 +1,5 @@
 package UI;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -12,7 +13,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovingObjectWithObstacles extends Application {
+public class MovingObjectWithObstacles {
 
     private static final double OBJECT_RADIUS = 20.0;
     private static final double OBJECT_SPEED_BLUE = 5.0;
@@ -30,8 +31,8 @@ public class MovingObjectWithObstacles extends Application {
 
     private double totalDistance = 0.0;
 
-    @Override
-    public void start(Stage primaryStage) {
+
+    public Scene start() {
         Pane mapPane = new Pane();
 
         // Inicjalizacja etykiety na komunikat o kolizji
@@ -96,12 +97,13 @@ public class MovingObjectWithObstacles extends Application {
         mapPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
 
         Scene scene = new Scene(mapPane, 700, 500); // Zmiana rozmiarów sceny
-        primaryStage.setTitle("Moving Object with Obstacles");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+//        primaryStage.setTitle("Moving Object with Obstacles");
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
 
         // Ustawienie fokusu na mapie, aby obsługa zdarzeń klawiatury działała
         mapPane.requestFocus();
+        return scene ;
     }
 
     private Rectangle createObstacle(double x, double y, double width, double height) {
@@ -217,7 +219,7 @@ public class MovingObjectWithObstacles extends Application {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+//    //public static void main(String[] args) {
+//        launch(args);
+//    }
 }
