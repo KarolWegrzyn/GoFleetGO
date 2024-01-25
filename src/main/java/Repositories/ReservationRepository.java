@@ -46,7 +46,6 @@ public class ReservationRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return generatedId;
     }
 

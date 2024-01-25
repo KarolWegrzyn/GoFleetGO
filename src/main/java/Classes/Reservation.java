@@ -61,7 +61,6 @@ public class Reservation {
             throw new Exception("Vehicle is not available");
         }
 
-
         Reservation reservation = new Reservation(currentUserID, vehicleID, duration);
         int reservationId = reservationRepository.insertReservation(currentUserID, vehicleID, duration);
         reservation.setReservationID(reservationId);
