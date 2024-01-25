@@ -79,7 +79,7 @@ public class ReservationRepository {
 
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM Reservation WHERE End_time <= NOW() AND Status = 'notActive'")) {
+                     "SELECT * FROM Reservation WHERE End_time <= NOW() AND Status = 'finished'")) {
             VehicleRepository vehicleRepository = new VehicleRepository();
             ReservationRepository reservationRepository = new ReservationRepository();
 
@@ -94,7 +94,7 @@ public class ReservationRepository {
                 Reservation.ReservationStatus status = Reservation.ReservationStatus.valueOf(resultSet.getString("Status"));
 
                 vehicleRepository.updateStatus(vehicleID, Vehicle.VehicleStatus.free);
-                reservationRepository.updateStatus(id, Reservation.ReservationStatus.notActive);
+                reservationRepository.updateStatus(id, Reservation.ReservationStatus.finished);
             }
         } catch (SQLException e) {
             e.printStackTrace();

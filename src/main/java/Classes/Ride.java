@@ -17,6 +17,11 @@ public class Ride implements Serializable {
     private Integer reservationID;
     private int routeID;
 
+    public enum RideStatus{
+        active,
+        finished
+    }
+
     public Ride(int rideID, int userID, int vehicleID, Integer reservationID, Integer routeID) {
         this.rideID = rideID;
         this.userID = userID;
@@ -28,7 +33,7 @@ public class Ride implements Serializable {
     public Ride() {
     }
 
-    public static Ride createNewRide(int userID, int vehicleID, int reservationID) throws Exception {
+    public static Ride createNewRide(int userID, int vehicleID, Integer reservationID) throws Exception {
         User user = findUserById(userID);
         assert user != null;
         Vehicle vehicle = findVehicleById(vehicleID);
@@ -42,7 +47,7 @@ public class Ride implements Serializable {
 
         int[] startingPosition = vehicle.Drive();
         int routeId = createNewRoute(startingPosition);
-        Ride createdRide = RideRepository.createNewRide(userID, vehicleID, reservationID);
+        Ride createdRide = RideRepository.createNewRide(userID, vehicleID, reservationID, routeId);
         return  createdRide;
     }
 
@@ -55,7 +60,7 @@ public class Ride implements Serializable {
         startingPosition[1] = vehicle.getColumn();
 
         int routeId = createNewRoute(startingPosition);
-        Ride createdRide = RideRepository.createNewRide(userID, vehicle.getVehicleID(), null);
+        Ride createdRide = RideRepository.createNewRide(userID, vehicle.getVehicleID(), null, routeId);
         vehicle.Drive();
         return createdRide;
     }
@@ -96,11 +101,11 @@ public class Ride implements Serializable {
         this.vehicleID = vehicleID;
     }
 
-    public int getReservationID() {
+    public Integer getReservationID() {
         return reservationID;
     }
 
-    public void setReservationID(int reservationID) {
+    public void setReservationID(Integer reservationID) {
         this.reservationID = reservationID;
     }
 

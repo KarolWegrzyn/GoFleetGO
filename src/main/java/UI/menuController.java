@@ -29,10 +29,11 @@ public class menuController {
         if (event.getSource().equals(button_wyp_sam)) {
             try {
                 Ride ride = new Ride();
+                ride.setRideID(1);
                 ride.setUserID(GlobalData.getUserId());
                 ride.setVehicleID(1);
-                ride.setReservationID(1);
-
+//                ride.setReservationID(1);
+                ride.setReservationID(null);
                 ClientRequest clientRequest = new ClientRequest();
                 clientRequest.setData(ride);
                 clientRequest.setAction("createNewRide");

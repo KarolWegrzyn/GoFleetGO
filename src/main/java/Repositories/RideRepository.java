@@ -12,43 +12,20 @@ public class RideRepository {
     public static void finishRide(Integer rideId, Route route) {
 
     }
-
-    public void insertRide(Ride ride) {
+    public static Ride createNewRide(int userId, int vehicleId, Integer reservationId, int routeId) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO Ride (User_ID, Vechicle_ID, Reservation_ID, Route_ID) VALUES (?, ?, ?, ?)")) {
-            preparedStatement.setInt(1, ride.getUserID());
-            preparedStatement.setInt(2, ride.getVehicleID());
-            preparedStatement.setInt(3, ride.getReservationID());
-            preparedStatement.setInt(4, ride.getRouteID());
-
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Ride inserted successfully.");
-            } else {
-                System.out.println("Failed to insert ride.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Ride createNewRide(int userId, int vehicleId, Integer reservationId) {
-        int generatedId = -1;
-
-        try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO Ride (User_ID, Vehicle_ID, Reservation_ID, Route_ID) VALUES (?, ?, ?, null)",
+                     "INSERT INTO Ride (User_ID, Vehicle_ID, Reservation_ID, Route_ID, State) VALUES (?, ?, ?, ?, ?)",
                      Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, vehicleId);
             if (reservationId == null){
                 preparedStatement.setNull(3, java.sql.Types.INTEGER);
             } else {
-                preparedStatement.setInt(3, reservationId);
+                preparedStatement.setInt(3, routeId);
             }
+            preparedStatement.setInt(4, vehicleId);
+            preparedStatement.setString(5, String.valueOf(Ride.RideStatus.active));
 
             int rowsAffected = preparedStatement.executeUpdate();
 
@@ -56,7 +33,7 @@ public class RideRepository {
                 // Retrieve the generated keys
                 try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        generatedId = generatedKeys.getInt(1);
+                        int generatedId = generatedKeys.getInt(1);
                         System.out.println("Ride inserted successfully. Generated ID: " + generatedId);
 
                         return new Ride(generatedId, userId, vehicleId, reservationId, -1);
@@ -73,6 +50,8 @@ public class RideRepository {
         }
         return null;
     }
+
+
 
     public static Ride findRideById(Integer rideID, Route route) {
         try (Connection connection = ConnectionManager.getConnection();
