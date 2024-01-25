@@ -1,5 +1,8 @@
 package UI;
 
+import DTO.ClientRequest;
+import DTO.LoginData;
+import DTO.ServerResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import util.NetworkClient;
 
 public class MainController {
     @FXML
@@ -48,9 +52,15 @@ public class MainController {
                 password = text_pas.getText();
 
                 GetUserExample userExample = new GetUserExample();
+                ClientRequest clientRequest = new ClientRequest();
+                LoginData loginData = new LoginData(username, password);
 
-                userExample.connection(username, password);
-                System.out.println(userExample.getLogged()); //userExample.getLogged() - sprawdza czy dane logowania sa poprawne
+                clientRequest.setAction("login");
+                clientRequest.setData(loginData);
+
+                ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
+                Integer userId = (Integer) serverResponse.getData();
+                System.out.println(userId);//userExample.getLogged() - sprawdza czy dane logowania sa poprawne
 
                 if(userExample.getLogged())
                 {

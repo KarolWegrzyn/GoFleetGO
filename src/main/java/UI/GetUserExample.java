@@ -14,7 +14,7 @@ public class GetUserExample {
         return isLogged;
     }
 
-    public  void connection(String userNameToSearch, String user_pas) {
+    public Integer fetchUser(String userNameToSearch, String user_pas) {
         // Parametry połączenia z bazą danych MySQL
         String url = "jdbc:mysql://localhost:3306/gofleetgo";
         String user = "root";
@@ -46,6 +46,7 @@ public class GetUserExample {
                 {
                     System.out.println("Pomyslnie zalogowano!");
                     isLogged = true;
+                    return foundUser.getUserID();
                 }
                 else
                 {
@@ -62,6 +63,7 @@ public class GetUserExample {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
     // Metoda do wyszukiwania użytkownika po nazwie użytkownika
     private static User getUserByUsername(Connection connection, String userName) throws SQLException {
