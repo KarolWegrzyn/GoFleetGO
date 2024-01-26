@@ -60,7 +60,8 @@ CREATE TABLE `model` (
   `Engine` decimal(2,1) NOT NULL,
   `Fuel_capacity` decimal(4,2) NOT NULL,
   `Year_of_production` date NOT NULL,
-  `Max_speed` double NOT NULL
+  `Max_speed` double NOT NULL,
+  `Price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
@@ -329,12 +330,12 @@ COMMIT;
 --
 -- Inserting data
 --
-INSERT INTO model (Brand, Engine, Fuel_Capacity, Year_Of_Production, Max_speed)
+INSERT INTO model (Brand, Engine, Fuel_Capacity, Year_Of_Production, Max_speed, Price)
 VALUES
-('Toyota Camry', 2.5, 40.0, '2022-05-15', 140),
-('Honda Civic', 1.8, 50.0, '2021-08-20', 180),
-('Ford Mustang', 5.0, 60.0, '2023-02-10', 240),
-('Chevrolet Silverado', 6.2, 70.0, '2022-11-05', 280);
+('Toyota Camry', 2.5, 40.0, '2022-05-15', 140, 5),
+('Honda Civic', 1.8, 50.0, '2021-08-20', 180, 8),
+('Ford Mustang', 5.0, 60.0, '2023-02-10', 240, 10),
+('Chevrolet Silverado', 6.2, 70.0, '2022-11-05', 280, 15);
 
 INSERT INTO `subscription` (`Cost`, `Funds`) VALUES
 (29.99, 1000.00),

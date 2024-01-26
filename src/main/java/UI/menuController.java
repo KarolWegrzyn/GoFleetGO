@@ -43,27 +43,6 @@ public class menuController {
     private void changeToWypSam(ActionEvent event) {
         if (event.getSource().equals(button_wyp_sam)) {
             try {
-//                Vehicle vehicle = VehicleRepository.findVehicleById(1);
-//                //Do not forget about not null reservation
-//                Ride ride = RideService.createNewRide(
-//                        GlobalData.getUserId(),
-//                        vehicle
-//                );
-//
-////
-//                Ride ride = new Ride();
-//                ride.setRideID(1);
-//                ride.setUserID(GlobalData.getUserId());
-//                ride.setVehicleID(2);
-//                ride.setReservationID(null);
-//                ClientRequest clientRequest = new ClientRequest();
-//                clientRequest.setData(ride);
-//                clientRequest.setAction("createNewRide");
-//
-//                ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
-//                Integer rideId = (Integer) serverResponse.getData();
-//                GlobalData.setCurrentRideId(rideId);
-
                 Stage stage = (Stage) borderPane_menu.getScene().getWindow();
                 stage.close();
                 MovingObjectWithObstacles d = new MovingObjectWithObstacles();

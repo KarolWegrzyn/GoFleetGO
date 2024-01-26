@@ -46,8 +46,10 @@ public class ModelRepository {
                 double engine = resultSet.getDouble("Engine");
                 double fuelCapacity = resultSet.getDouble("Fuel_capacity");
                 java.util.Date yearOfProduction = resultSet.getDate("Year_of_production");
+                double maxSpeed = resultSet.getDouble("Max_Speed");
+                double price = resultSet.getDouble("Price");
 
-                return new Model(id, brand, engine, fuelCapacity, yearOfProduction);
+                return new Model(id, brand, engine, fuelCapacity, yearOfProduction, maxSpeed, price);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,13 +67,15 @@ public class ModelRepository {
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
-                int modelID = resultSet.getInt("Model_ID");
+                int id = resultSet.getInt("Model_ID");
                 String brand = resultSet.getString("Brand");
                 double engine = resultSet.getDouble("Engine");
                 double fuelCapacity = resultSet.getDouble("Fuel_capacity");
-                Date yearOfProduction = resultSet.getDate("Year_of_production");
+                java.util.Date yearOfProduction = resultSet.getDate("Year_of_production");
+                double maxSpeed = resultSet.getDouble("Max_Speed");
+                double price = resultSet.getDouble("Price");
 
-                Model model = new Model(modelID, brand, engine, fuelCapacity, yearOfProduction);
+                Model model = new Model(id, brand, engine, fuelCapacity, yearOfProduction, maxSpeed, price);
                 models.add(model);
             }
 

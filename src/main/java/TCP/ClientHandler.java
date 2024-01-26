@@ -4,14 +4,12 @@ import Classes.Ride;
 import Classes.Route;
 import Classes.User;
 import Classes.Vehicle;
-import DTO.ClientRequest;
-import DTO.EndRideData;
-import DTO.LoginData;
-import DTO.ServerResponse;
+import DTO.*;
 import Repositories.RideRepository;
 import Repositories.RouteRepository;
 import Repositories.VehicleRepository;
 import Services.RideService;
+import Services.VehicleService;
 
 import java.io.*;
 import java.net.Socket;
@@ -51,8 +49,6 @@ public class ClientHandler implements Runnable {
 
                     Ride newRide = RideRepository.createNewRide(userId, vehicleId, null, newRouteId);
 
-
-
                     assert newRide != null;
                     serverResponse.setData(newRide.getRideID());
                     break;
@@ -61,6 +57,14 @@ public class ClientHandler implements Runnable {
                 case "endRide": {
                     Route route = (Route) clientRequest.getData();
                     RideService.finishRide(route, clientRequest.getPrivateToken());
+                    break;
+                }
+
+                case "showVehicleData": {
+                    Integer vehicleId = (Integer) clientRequest.getData();
+                    VehicleModelData vehicleModelData = VehicleService.getVehicleModelDataById(vehicleId);
+
+                    serverResponse.setData(vehicleModelData);
                     break;
                 }
 

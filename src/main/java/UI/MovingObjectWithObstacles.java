@@ -54,13 +54,6 @@ public class MovingObjectWithObstacles {
     //Delete afeter testing
     Integer vehicleId = 1;
     public Scene start() throws Exception {
-        ClientRequest clientRequest = new ClientRequest();
-        clientRequest.setData(vehicleId);
-        clientRequest.setPrivateToken(GlobalData.getUserId());
-
-        clientRequest.setAction("createNewRide");
-        ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
-
         initializeSummaryText();
 
         // Inicjalizacja etykiety na komunikat o kolizji
@@ -324,19 +317,19 @@ public class MovingObjectWithObstacles {
 
         // Wybierz kolor i prędkość na podstawie przekazanego indeksu
         switch (colorIndex) {
-            case 0:
+            case 1:
                 newColor = Color.GREEN;
                 newSpeed = OBJECT_SPEED_GREEN;
                 break;
-            case 1:
+            case 2:
                 newColor = Color.BLUE;
                 newSpeed = OBJECT_SPEED_BLUE;
                 break;
-            case 2:
+            case 3:
                 newColor = Color.RED;
                 newSpeed = OBJECT_SPEED_RED;
                 break;
-            case 3:
+            case 4:
                 newColor = Color.YELLOW;
                 newSpeed = OBJECT_SPEED_YELLOW;
                 break;

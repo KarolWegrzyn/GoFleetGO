@@ -11,31 +11,29 @@ public class Model {
     private double engine;
     private double fuelCapacity;
     private Date yearOfProduction;
-
     private double maxSpeed;
 
-    public Model(int modelID, String brand, double engine, double fuelCapacity, Date yearOfProduction) {
+
+
+    private double price;
+    public Model(int modelID, String brand, double engine, double fuelCapacity, Date yearOfProduction, double maxSpeed, double price) {
         this.modelID = modelID;
         this.brand = brand;
         this.engine = engine;
         this.fuelCapacity = fuelCapacity;
         this.yearOfProduction = yearOfProduction;
-    }
-
-    public static void ListAllModels(){
-        ModelRepository modelRepository = new ModelRepository();
-        List<Model> listOfModels = modelRepository.getAllDistinctModels();
-        for (Model model : listOfModels) {
-            System.out.println("Model ID: " + model.getModelID());
-            System.out.println("Brand: " + model.getBrand());
-            System.out.println("Engine: " + model.getEngine());
-            System.out.println("Fuel Capacity: " + model.getFuelCapacity());
-            System.out.println("Year of Production: " + model.getYearOfProduction());
-            System.out.println("------------------------------");
-        }
+        this.maxSpeed = maxSpeed;
+        this.price = price;
     }
     // Getters and setters
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
     public int getModelID() {
         return modelID;
     }

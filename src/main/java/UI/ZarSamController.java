@@ -1,5 +1,8 @@
 package UI;
 
+import DTO.ClientRequest;
+import DTO.ServerResponse;
+import DTO.VehicleModelData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,9 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import util.GlobalData;
+import util.NetworkClient;
 
 public class ZarSamController {
-    private int id; //0-zielony, 1-niebieski, 2-czerwony, 3-zolty
+    private int id; //1-zielony, 2-niebieski, 3-czerwony, 4-zolty
 
     @FXML
     private AnchorPane mainAnPen;
@@ -98,22 +103,40 @@ public class ZarSamController {
     private CheckBox yellowCheck;
 
     @FXML
-    private void sendIdOfCar(ActionEvent event)
-    {
+    private void initialize(){
+        ClientRequest clientRequest = new ClientRequest();
+        clientRequest.setData(1);
+        clientRequest.setAction("showVehicleData");
+
+        ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
+        VehicleModelData data = (VehicleModelData) serverResponse.getData();
+
+        g_zasieg.setText(String.valueOf(data.getRange()));
+    }
+
+    @FXML
+    private void sendIdOfCar(ActionEvent event) throws Exception {
         if(greenCheck.isSelected())
         {
-            id=0;
+            id=1;
         }else if(blueCheck.isSelected())
         {
-            id=1;
+            id=2;
         }else if(redCheck.isSelected())
         {
-            id=2;
+            id=3;
         }else if(yellowCheck.isSelected())
         {
-            id=3;
+            id=4;
         }
-        System.out.println(id);
+
+        ClientRequest clientRequest = new ClientRequest();
+        clientRequest.setData(id);
+        clientRequest.setPrivateToken(GlobalData.getUserId());
+
+        clientRequest.setAction("createNewRide");
+        ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
+        System.out.println("id of chosen vehicle: " + id);
 
         Stage stage = (Stage) mainAnPen.getScene().getWindow();
         stage.close();

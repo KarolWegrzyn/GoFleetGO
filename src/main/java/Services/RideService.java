@@ -1,16 +1,7 @@
 package Services;
 
 import Classes.*;
-import Repositories.RideRepository;
-import Repositories.RouteRepository;
-import Repositories.VehicleRepository;
-import util.GlobalData;
-
-import static Repositories.ReservationRepository.findReservationById;
-import static Repositories.RouteRepository.createNewRoute;
-import static Repositories.RouteRepository.updateRoute;
-import static Repositories.UserRepository.findUserById;
-import static Repositories.VehicleRepository.findVehicleById;
+import Repositories.*;
 
 public class RideService {
     //make an implementation for updating ride, route, fuel consumption
@@ -26,7 +17,11 @@ public class RideService {
 
         RouteRepository.updateRoute(ride.getRouteID(), route.getFinishRow(),route.getFinishColumn(), route.getDistance());
 
+        Vehicle vehicle = VehicleRepository.findVehicleById(vehicleId);
+        Model model = ModelRepository.findModelById(vehicle.getModelID());
 
+        double cost = route.getDistance() * model.getPrice();
+        UserRepository.updateBalance(userId, -cost);
 //        double[] finishPosition = new double[2];
 //        finishPosition[0] = vehicle.getRow();
 //        finishPosition[1] = vehicle.getColumn();
