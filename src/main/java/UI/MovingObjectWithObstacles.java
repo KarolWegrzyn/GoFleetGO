@@ -60,7 +60,40 @@ public class MovingObjectWithObstacles {
     private ScheduledFuture<?> updateFuelLevelTask;
     Pane mapPane = new Pane();
 
+    private void UpdateLocation() {
+        ClientRequest clientRequest = new ClientRequest();
+        Route route = new Route();
+        route.setFinishRow(object.getCenterX());
+        route.setFinishColumn(object.getCenterY());
+
+        clientRequest.setData(route);
+        clientRequest.setPrivateToken(GlobalData.getUserId());
+        clientRequest.setAction("updateLocation");
+
+        NetworkClient.sendRequest(clientRequest);
+
+        //VehicleRepository.updateLocation(id, object.getCenterX(), object.getCenterY());
+    }
+
+    private void UpdateFuelLevel() {
+        ClientRequest clientRequest = new ClientRequest();
+        Route route = new Route();
+        route.setDistance(distanceFromLastUpdate);
+
+        clientRequest.setData(route);
+        clientRequest.setPrivateToken(GlobalData.getUserId());
+        clientRequest.setAction("updateFuelLevel");
+
+        NetworkClient.sendRequest(clientRequest);
+
+        //VehicleRepository.updateFuelLevel(id, distanceFromLastUpdate);
+        distanceFromLastUpdate = 0;
+    }
+
     public void startJourney() {
+        updateLocationTask = executorService.scheduleAtFixedRate(this::UpdateLocation, 10, 10, TimeUnit.SECONDS);
+        updateFuelLevelTask = executorService.scheduleAtFixedRate(this::UpdateFuelLevel, 10, 10, TimeUnit.SECONDS);
+
         ClientRequest clientRequest = new ClientRequest();
 
         clientRequest.setPrivateToken(GlobalData.getUserId());
@@ -194,10 +227,6 @@ public class MovingObjectWithObstacles {
         mapPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
 
         Scene scene = new Scene(mapPane, 700, 500); // Zmiana rozmiarów scen
-
-        updateLocationTask = executorService.scheduleAtFixedRate(this::UpdateLocation, 10, 10, TimeUnit.SECONDS);
-        updateFuelLevelTask = executorService.scheduleAtFixedRate(this::UpdateFuelLevel, 10, 10, TimeUnit.SECONDS);
-
         // Ustawienie fokusu na mapie, aby obsługa zdarzeń klawiatury działała
         mapPane.requestFocus();
         return scene ;
@@ -381,15 +410,6 @@ public class MovingObjectWithObstacles {
                 endJourneyByColision();
             }
         }
-    }
-
-    private void UpdateLocation() {
-        VehicleRepository.updateLocation(id, object.getCenterX(), object.getCenterY());
-    }
-
-    private void UpdateFuelLevel() {
-        VehicleRepository.updateFuelLevel(id, distanceFromLastUpdate);
-        distanceFromLastUpdate = 0;
     }
 
     private void changeColorAndSpeed(int colorIndex) {

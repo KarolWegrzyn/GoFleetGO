@@ -79,6 +79,22 @@ public class ClientHandler implements Runnable {
                     break;
                 }
 
+                case "updateLocation": {
+                    Route route = (Route) clientRequest.getData();
+                    Integer userId = (Integer) clientRequest.getPrivateToken();
+
+                    VehicleRepository.updateLocation(userId, route.getFinishRow(), route.getFinishColumn());
+                    break;
+                }
+
+                case "updateFuelLevel": {
+                    Route route = (Route) clientRequest.getData();
+                    Integer userId = (Integer) clientRequest.getPrivateToken();
+
+                    VehicleRepository.updateFuelLevel(userId, route.getDistance());
+                    break;
+                }
+
                 case "showVehicleData": {
                     Integer vehicleId = (Integer) clientRequest.getData();
                     VehicleModelData vehicleModelData = VehicleService.getVehicleModelDataById(vehicleId);
