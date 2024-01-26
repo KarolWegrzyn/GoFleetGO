@@ -42,56 +42,55 @@ public class RegisterController {
         boolean areDataValid = true;
         if(event.getSource().equals(reg_button))
         {
-            //check email
-            if (emailValue == null || emailValue.isBlank()) {
-                text_message.setText("Email jest pusty!");
-                System.out.println("Email jest pusty!");
+            setRegister();
+            //check user name
+            if (username == null || username.isBlank() && areDataValid) {
+                text_message.setText("Nazwa uzytkownika jest pusta!");
+                System.out.println("Nazwa uzytkownika jest pusta!");
                 areDataValid = false;
             } else {
-                String regex = ".*@.*\\..+";
-                Pattern pattern = Pattern.compile(regex);
-                if (!pattern.matcher(emailValue).matches()){
-                    text_message.setText("Email jest w zlym formacie!");
-                    System.out.println("Email Email jest w zlym formacie!");
+                if (UserRepository.findUserByUsername(username) != null && areDataValid){
+                    text_message.setText("Nazwa uzytkownika jest juz zajeta!");
+                    System.out.println("Nazwa uzytkownika juz zejeta!");
                     areDataValid = false;
                 }
             }
 
-            //check password
-            if(pass == null || pass.isBlank()) {
+            if(pass == null || pass.isBlank() && areDataValid) {
                 text_message.setText("Hasło jest puste!");
                 System.out.println("Hasło jest puste!");
                 areDataValid = false;
             } else {
-                if (!containsUpperCaseLetter(pass)) {
+                if (!containsUpperCaseLetter(pass) && areDataValid) {
                     text_message.setText("Hasło nie zawiera dużej litery!");
                     System.out.println("Hasło nie zawiera dużej litery!");
                     areDataValid = false;
                 }
 
-                if (!containsDigit(pass)) {
+                if (!containsDigit(pass) && areDataValid) {
                     text_message.setText("Hasło nie zawiera cyfry!");
                     System.out.println("Hasło nie zawiera cyfry!");
                     areDataValid = false;
                 }
 
-                if(!pass.equals(secondpass)) {
+                if(!pass.equals(secondpass) && areDataValid) {
                     text_message.setText("Hasła nie są idętyczne!");
                     System.out.println("Hasła nie są idętyczne!");
                     areDataValid = false;
                 }
             }
 
-            setRegister();
-            //check user name
-            if (username == null || username.isBlank()) {
-                text_message.setText("Nazwa uzytkownika jest pusta!");
-                System.out.println("Nazwa uzytkownika jest pusta!");
+            //check email
+            if (emailValue == null || emailValue.isBlank() && areDataValid) {
+                text_message.setText("Email jest pusty!");
+                System.out.println("Email jest pusty!");
                 areDataValid = false;
             } else {
-                if (UserRepository.findUserByUsername(username) != null){
-                    text_message.setText("Nazwa uzytkownika jest juz zajeta!");
-                    System.out.println("Nazwa uzytkownika juz zejeta!");
+                String regex = ".*@.*\\..+";
+                Pattern pattern = Pattern.compile(regex);
+                if (!pattern.matcher(emailValue).matches() && areDataValid){
+                    text_message.setText("Email jest w zlym formacie!");
+                    System.out.println("Email Email jest w zlym formacie!");
                     areDataValid = false;
                 }
             }
