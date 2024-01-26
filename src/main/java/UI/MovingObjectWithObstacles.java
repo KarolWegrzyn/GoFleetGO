@@ -4,6 +4,7 @@ import Classes.Route;
 import DTO.ClientRequest;
 import DTO.ServerResponse;
 import DTO.StartRideData;
+import Repositories.VehicleRepository;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -20,6 +21,10 @@ import util.NetworkClient;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class MovingObjectWithObstacles {
     private static final double OBJECT_RADIUS = 20.0;
@@ -45,6 +50,14 @@ public class MovingObjectWithObstacles {
     private Text summaryText;
     private double totalDistance = 0.0;
     private int id;
+    double newX;
+    double newY;
+
+    double distanceFromLastUpdate = 0;
+
+    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledFuture<?> updateLocationTask;
+    private ScheduledFuture<?> updateFuelLevelTask;
     Pane mapPane = new Pane();
 
     public void startJourney() {
@@ -64,6 +77,10 @@ public class MovingObjectWithObstacles {
     }
 
     public void endJourney() {
+        updateLocationTask.cancel(true);
+        updateFuelLevelTask.cancel(true);
+        executorService.shutdown();
+
         endX = object.getCenterX();
         endY = object.getCenterY();
         endDistance = totalDistance/1000;
@@ -82,6 +99,31 @@ public class MovingObjectWithObstacles {
         NetworkClient.sendRequest(clientRequest);
         hideAllObjects();
         showSummary();
+    }
+
+    public void endJourneyByColision() {
+        updateLocationTask.cancel(true);
+        updateFuelLevelTask.cancel(true);
+        executorService.shutdown();
+
+        endX = object.getCenterX();
+        endY = object.getCenterY();
+        endDistance = totalDistance/1000;
+        journeyEnded = true; // Ustawienie flagi na true po zakończeniu przejazdu
+
+        ClientRequest clientRequest = new ClientRequest();
+        Route route = new Route();
+        route.setFinishRow(endX);
+        route.setFinishColumn(endY);
+        route.setDistance(endDistance);
+
+        clientRequest.setData(route);
+        clientRequest.setPrivateToken(GlobalData.getUserId());
+        clientRequest.setAction("endRideByColision");
+
+        NetworkClient.sendRequest(clientRequest);
+        hideAllObjects();
+        showColisionSummary();
     }
 
     public Scene start() throws Exception {
@@ -153,10 +195,15 @@ public class MovingObjectWithObstacles {
 
         Scene scene = new Scene(mapPane, 700, 500); // Zmiana rozmiarów scen
 
+        updateLocationTask = executorService.scheduleAtFixedRate(this::UpdateLocation, 10, 10, TimeUnit.SECONDS);
+        updateFuelLevelTask = executorService.scheduleAtFixedRate(this::UpdateFuelLevel, 10, 10, TimeUnit.SECONDS);
+
         // Ustawienie fokusu na mapie, aby obsługa zdarzeń klawiatury działała
         mapPane.requestFocus();
         return scene ;
     }
+
+
 
     public void setId(int id_)
     {
@@ -179,12 +226,25 @@ public class MovingObjectWithObstacles {
     }
 
     private void showSummary() {
-        DecimalFormat pattern = new DecimalFormat("000.00");
         String summary = String.format("Podsumowanie trasy:\n \n" +
                 "Początkowa pozycja: (%.2f, %.2f)\n" +
                 "Końcowa pozycja: (%.2f, %.2f)\n" +
                 "Przebyty dystans: %.2f km\n" +
-                "Cena przejazdu: %.2f zl", 50.0, 50.0, endX, endY, endDistance, endDistance * price);
+                "Cena przejazdu: %.2f zl", startX, startY, endX, endY, endDistance, endDistance * price);
+        summaryText.setText(summary);
+        summaryText.setVisible(true);
+    }
+
+    private void showColisionSummary() {
+        double fee = 500.00;
+        String summary = String.format("Podsumowanie trasy:\n \n" +
+                "Spowodowałeś stłuczkę!!!\n" +
+                "Naliczona zostanie kara %.2f zl \n\n" +
+                "Początkowa pozycja: (%.2f, %.2f)\n" +
+                "Końcowa pozycja: (%.2f, %.2f)\n" +
+                "Przebyty dystans: %.2f km\n" +
+                "Cena przejazdu: %.2f zl",
+                fee, startX, startY, endX, endY, endDistance, (endDistance * price) + fee );
         summaryText.setText(summary);
         summaryText.setVisible(true);
     }
@@ -265,8 +325,8 @@ public class MovingObjectWithObstacles {
             System.out.println("Końcowy Dystans: " + endDistance);
         } else {
             // Reszta kodu obsługująca ruch samochodu
-            double newX = object.getCenterX();
-            double newY = object.getCenterY();
+            newX = object.getCenterX();
+            newY = object.getCenterY();
 
             double speed;
 
@@ -307,18 +367,29 @@ public class MovingObjectWithObstacles {
             // Sprawdzenie kolizji z przeszkodami
             if (!checkCollision(newX, newY)) {
                 double distance = calculateDistance(object.getCenterX(), object.getCenterY(), newX, newY);
+                distanceFromLastUpdate += distance;
                 object.setCenterX(newX);
                 object.setCenterY(newY);
                 collisionLabel.setText(""); // Wyczyszczenie komunikatu o kolizji
                 updatePositionLabels(); // Aktualizacja etykiet z położeniem
                 updateDistanceLabel(distance); // Aktualizacja etykiety z przebytą drogą
                 updateColorLabel((Color) object.getFill()); // Aktualizacja etykiety z kolorem
+
             } else {
                 collisionLabel.setText("Stłuczka!"); // Komunikat o kolizji
                 //colision
-                endJourney();
+                endJourneyByColision();
             }
         }
+    }
+
+    private void UpdateLocation() {
+        VehicleRepository.updateLocation(id, object.getCenterX(), object.getCenterY());
+    }
+
+    private void UpdateFuelLevel() {
+        VehicleRepository.updateFuelLevel(id, distanceFromLastUpdate);
+        distanceFromLastUpdate = 0;
     }
 
     private void changeColorAndSpeed(int colorIndex) {

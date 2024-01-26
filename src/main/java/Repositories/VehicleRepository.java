@@ -87,7 +87,7 @@ public class VehicleRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "UPDATE vehicle SET Fuel_Level = Fuel_Level - ? WHERE Vehicle_ID = ?")) {
 
-            preparedStatement.setDouble(1, distance/200);
+            preparedStatement.setDouble(1, distance/1000);
             preparedStatement.setInt(2, vehicleID);
 
             int rowsAffected = preparedStatement.executeUpdate();

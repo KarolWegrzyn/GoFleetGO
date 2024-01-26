@@ -73,6 +73,12 @@ public class ClientHandler implements Runnable {
                     break;
                 }
 
+                case "endRideByColision": {
+                    Route route = (Route) clientRequest.getData();
+                    RideService.finishRideByColision(route, clientRequest.getPrivateToken());
+                    break;
+                }
+
                 case "showVehicleData": {
                     Integer vehicleId = (Integer) clientRequest.getData();
                     VehicleModelData vehicleModelData = VehicleService.getVehicleModelDataById(vehicleId);
