@@ -1,6 +1,7 @@
 package Repositories;
 
 import Classes.Vehicle;
+import DTO.StartRideData;
 import DTO.VehicleModelData;
 import Managers.ConnectionManager;
 
@@ -9,11 +10,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static Managers.ConnectionManager.getConnection;
 
 public class VehicleRepository {
+    public static StartRideData returnVehicleStartDataById(Integer vehicleID) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT Row, `Column`, Price FROM Vehicle " +
+                             "INNER JOIN Model ON Vehicle.Model_ID = Model.Model_ID " +
+                             " WHERE Vehicle_ID = ?")) {
+            preparedStatement.setInt(1, vehicleID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                double row = resultSet.getDouble("Row");
+                double column = resultSet.getDouble("Column");
+                double price = resultSet.getDouble("Price");
+
+                return new StartRideData(row, column, price);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static Vehicle findVehicleById(int vehicleID) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
@@ -128,7 +151,7 @@ public class VehicleRepository {
 
                 double range = fuelLevel/200;
 
-                return new VehicleModelData(brand, engine, fuelLevel, yearOfProduction, range, status, price);
+                return new VehicleModelData(row, column, brand, engine, fuelLevel, yearOfProduction, range, status, price);
             }
         } catch (SQLException e) {
             e.printStackTrace();

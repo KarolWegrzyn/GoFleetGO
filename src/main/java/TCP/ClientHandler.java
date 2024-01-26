@@ -39,6 +39,17 @@ public class ClientHandler implements Runnable {
                     break;
                 }
 
+                case "startRide": {
+                    Integer userId = clientRequest.getPrivateToken();
+                    Ride ride = RideRepository.findRideByUserIdWithActiveState(userId);
+
+                    Integer vehicleId = ride.getVehicleID();
+                    StartRideData startRideData = VehicleService.getVehicleStartDataById(vehicleId);
+
+                    serverResponse.setData(startRideData);
+                    break;
+                }
+
                 case "createNewRide": {
                     Integer vehicleId = (Integer) clientRequest.getData();
                     Integer userId = clientRequest.getPrivateToken();

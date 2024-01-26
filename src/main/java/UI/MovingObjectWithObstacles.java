@@ -1,15 +1,9 @@
 package UI;
 
-import Classes.Ride;
 import Classes.Route;
 import DTO.ClientRequest;
-import DTO.EndRideData;
 import DTO.ServerResponse;
-import Repositories.RideRepository;
-import Services.RideService;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import DTO.StartRideData;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -17,14 +11,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.geometry.Pos;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import util.GlobalData;
 import util.NetworkClient;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +37,9 @@ public class MovingObjectWithObstacles {
     private Label colorLabel;
     private double endX;
     private double endY;
+    private double startX;
+    private double startY;
+    private double price;
     private double endDistance;
     private boolean journeyEnded = false;
     private Text summaryText;
@@ -51,9 +47,45 @@ public class MovingObjectWithObstacles {
     private int id;
     Pane mapPane = new Pane();
 
-    //Delete afeter testing
-    Integer vehicleId = 1;
+    public void startJourney() {
+        ClientRequest clientRequest = new ClientRequest();
+
+        clientRequest.setPrivateToken(GlobalData.getUserId());
+        clientRequest.setAction("startRide");
+
+        NetworkClient.sendRequest(clientRequest);
+
+        ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
+        StartRideData startRideData = (StartRideData) serverResponse.getData();
+
+        startX = startRideData.getRow();
+        startY = startRideData.getColumn();
+        price = startRideData.getPrice();
+    }
+
+    public void endJourney() {
+        endX = object.getCenterX();
+        endY = object.getCenterY();
+        endDistance = totalDistance/1000;
+        journeyEnded = true; // Ustawienie flagi na true po zakończeniu przejazdu
+
+        ClientRequest clientRequest = new ClientRequest();
+        Route route = new Route();
+        route.setFinishRow(endX);
+        route.setFinishColumn(endY);
+        route.setDistance(endDistance);
+
+        clientRequest.setData(route);
+        clientRequest.setPrivateToken(GlobalData.getUserId());
+        clientRequest.setAction("endRide");
+
+        NetworkClient.sendRequest(clientRequest);
+        hideAllObjects();
+        showSummary();
+    }
+
     public Scene start() throws Exception {
+        startJourney();
         initializeSummaryText();
 
         // Inicjalizacja etykiety na komunikat o kolizji
@@ -86,16 +118,11 @@ public class MovingObjectWithObstacles {
         colorLabel.setLayoutY(460);
         mapPane.getChildren().add(colorLabel);
 
-
-
         // Inicjalizacja obiektu (kółka)
         //id=3;
-        object = new Circle(OBJECT_RADIUS, Color.GREEN); // Startujemy od koloru zielonego
-        //setColorById(3);
+        object = new Circle(OBJECT_RADIUS, Color.GREEN);
 
-        //changeColorAndSpeed(3);
-        //placeObjectOnMap(50, 50); // Początkowa pozycja obiektu
-        setInitialPosition(50,50);
+        setInitialPosition(startX,startY);
         mapPane.getChildren().add(object);
 
         // Inicjalizacja przeszkód (kwadratów)
@@ -139,27 +166,7 @@ public class MovingObjectWithObstacles {
         placeObjectOnMap(x, y);
     }
 
-    public void endJourney() {
-        endX = object.getCenterX();
-        endY = object.getCenterY();
-        endDistance = totalDistance;
-        journeyEnded = true; // Ustawienie flagi na true po zakończeniu przejazdu
 
-        ClientRequest clientRequest = new ClientRequest();
-        Route route = new Route();
-        route.setFinishRow(endX);
-        route.setFinishColumn(endY);
-        route.setDistance(endDistance);
-
-        clientRequest.setData(route);
-        clientRequest.setPrivateToken(GlobalData.getUserId());
-        clientRequest.setAction("endRide");
-
-        NetworkClient.sendRequest(clientRequest);
-
-        hideAllObjects();
-        showSummary();
-    }
     private void initializeSummaryText() {
         summaryText = new Text();
         summaryText.setLayoutX(200); // Ustawienie połowy szerokości sceny
@@ -172,11 +179,12 @@ public class MovingObjectWithObstacles {
     }
 
     private void showSummary() {
+        DecimalFormat pattern = new DecimalFormat("000.00");
         String summary = String.format("Podsumowanie trasy:\n \n" +
                 "Początkowa pozycja: (%.2f, %.2f)\n" +
                 "Końcowa pozycja: (%.2f, %.2f)\n" +
-                "Przebyty dystans: %.2f", 50.0, 50.0, endX, endY, endDistance);
-
+                "Przebyty dystans: %.2f km\n" +
+                "Cena przejazdu: %.2f zl", 50.0, 50.0, endX, endY, endDistance, endDistance * price);
         summaryText.setText(summary);
         summaryText.setVisible(true);
     }
@@ -251,9 +259,10 @@ public class MovingObjectWithObstacles {
         if (code == KeyCode.K) {
             // Zakończ przejazd po wciśnięciu klawisza 'k'
             endJourney();
-            System.out.println("Końcowy Y:"+endY);
-            System.out.println("Końcowy X:"+endX);
-            System.out.println("Końcowy Dystans:"+endDistance);
+
+            System.out.println("Końcowy Y: " + endY);
+            System.out.println("Końcowy X: " + endX);
+            System.out.println("Końcowy Dystans: " + endDistance);
         } else {
             // Reszta kodu obsługująca ruch samochodu
             double newX = object.getCenterX();
@@ -270,7 +279,7 @@ public class MovingObjectWithObstacles {
             } else if (object.getFill() == Color.YELLOW) {
                 speed = OBJECT_SPEED_YELLOW;
             } else {
-                speed = OBJECT_SPEED_GREEN; // Dla zielonego
+                speed = OBJECT_SPEED_GREEN;
             }
 
             switch (code) {
@@ -306,6 +315,8 @@ public class MovingObjectWithObstacles {
                 updateColorLabel((Color) object.getFill()); // Aktualizacja etykiety z kolorem
             } else {
                 collisionLabel.setText("Stłuczka!"); // Komunikat o kolizji
+                //colision
+                endJourney();
             }
         }
     }
@@ -356,5 +367,21 @@ public class MovingObjectWithObstacles {
 
     private double calculateDistance(double x1, double y1, double x2, double y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    public double getStartX() {
+        return startX;
+    }
+
+    public void setStartX(double startX) {
+        this.startX = startX;
+    }
+
+    public double getStartY() {
+        return startY;
+    }
+
+    public void setStartY(double startY) {
+        this.startY = startY;
     }
 }

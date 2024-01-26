@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class VehicleModelData implements Serializable {
+
+    double row;
+    double column;
     String brand;
     double enginge;
     double fuelLevel;
@@ -14,7 +17,9 @@ public class VehicleModelData implements Serializable {
     Vehicle.VehicleStatus status;
     double price;
 
-    public VehicleModelData(String brand, double enginge, double fuelLevel, LocalDateTime yearOfProduction, double range, Vehicle.VehicleStatus status, double price) {
+    public VehicleModelData(double row, double column, String brand, double enginge, double fuelLevel, LocalDateTime yearOfProduction, double range, Vehicle.VehicleStatus status, double price) {
+        this.row = row;
+        this.column = column;
         this.brand = brand;
         this.enginge = enginge;
         this.fuelLevel = fuelLevel;
@@ -22,6 +27,22 @@ public class VehicleModelData implements Serializable {
         this.range = range;
         this.status = status;
         this.price = price;
+    }
+
+    public double getRow() {
+        return row;
+    }
+
+    public void setRow(double row) {
+        this.row = row;
+    }
+
+    public double getColumn() {
+        return column;
+    }
+
+    public void setColumn(double column) {
+        this.column = column;
     }
 
     public String getBrand() {

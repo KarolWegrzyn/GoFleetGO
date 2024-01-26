@@ -342,10 +342,10 @@ INSERT INTO `subscription` (`Cost`, `Funds`) VALUES
 (59.99, 2000.00);
 
 INSERT INTO vehicle (Model_ID, `Row`, `Column`, `Status`, `Fuel_Level`)
-VALUES (1,50,50,'free',20),
-       (2,100,50,'free',30),
-       (3,150,50,'free',40),
-       (4,200,50,'free',50);
+VALUES (1,100,50,'free',20),
+       (2,250,50,'free',30),
+       (3,300,50,'free',40),
+       (4,450,50,'free',50);
 
 INSERT INTO  user (Username, Password, Company_ID, Email, Balance)
 VALUES ('1','A1',null, '1@gmail.com', 0);

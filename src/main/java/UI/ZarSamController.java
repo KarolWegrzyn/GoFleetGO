@@ -18,6 +18,66 @@ public class ZarSamController {
     private int id; //1-zielony, 2-niebieski, 3-czerwony, 4-zolty
 
     @FXML
+    private void initialize(){
+        ClientRequest clientRequest = new ClientRequest();
+        clientRequest.setData(1);
+        clientRequest.setAction("showVehicleData");
+
+        ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
+        VehicleModelData data = (VehicleModelData) serverResponse.getData();
+        g_model.setText(String.valueOf(data.getBrand()));
+        g_zasieg.setText(String.valueOf(data.getRange()));
+        g_pozycja.setText("X: " + String.valueOf(data.getRow()) + " Y: " + String.valueOf(data.getColumn()));
+        g_stan_paliwa.setText(String.valueOf(data.getFuelLevel()));
+        g_rok_prod.setText(String.valueOf(data.getYearOfProduction().getYear()));
+        g_zasieg.setText(String.valueOf(data.getRange()));
+        g_status.setText(String.valueOf(data.getStatus()));
+        g_koszt.setText(String.valueOf(data.getPrice() + " zl"));
+
+        clientRequest.setData(2);
+        clientRequest.setAction("showVehicleData");
+
+        serverResponse = NetworkClient.sendRequest(clientRequest);
+        data = (VehicleModelData) serverResponse.getData();
+        b_model.setText(String.valueOf(data.getBrand()));
+        b_zasieg.setText(String.valueOf(data.getRange()));
+        b_pozycja.setText("X: " + String.valueOf(data.getRow()) + " Y: " + String.valueOf(data.getColumn()));
+        b_stan_paliwa.setText(String.valueOf(data.getFuelLevel()));
+        b_rok_prod.setText(String.valueOf(data.getYearOfProduction().getYear()));
+        b_zasieg.setText(String.valueOf(data.getRange()));
+        b_status.setText(String.valueOf(data.getStatus()));
+        b_koszt.setText(String.valueOf(data.getPrice() + " zl"));
+
+        clientRequest.setData(3);
+        clientRequest.setAction("showVehicleData");
+
+        serverResponse = NetworkClient.sendRequest(clientRequest);
+        data = (VehicleModelData) serverResponse.getData();
+        r_model.setText(String.valueOf(data.getBrand()));
+        r_zasieg.setText(String.valueOf(data.getRange()));
+        r_pozycja.setText("X: " + String.valueOf(data.getRow()) + " Y: " + String.valueOf(data.getColumn()));
+        r_stan_paliwa.setText(String.valueOf(data.getFuelLevel()));
+        r_rok_prod.setText(String.valueOf(data.getYearOfProduction().getYear()));
+        r_zasieg.setText(String.valueOf(data.getRange()));
+        r_status.setText(String.valueOf(data.getStatus()));
+        r_koszt.setText(String.valueOf(data.getPrice() + " zl"));
+
+        clientRequest.setData(4);
+        clientRequest.setAction("showVehicleData");
+
+        serverResponse = NetworkClient.sendRequest(clientRequest);
+        data = (VehicleModelData) serverResponse.getData();
+        y_model.setText(String.valueOf(data.getBrand()));
+        y_zasieg.setText(String.valueOf(data.getRange()));
+        y_pozycja.setText("X: " + String.valueOf(data.getRow()) + " Y: " + String.valueOf(data.getColumn()));
+        y_stan_paliwa.setText(String.valueOf(data.getFuelLevel()));
+        y_rok_prod.setText(String.valueOf(data.getYearOfProduction().getYear()));
+        y_zasieg.setText(String.valueOf(data.getRange()));
+        y_status.setText(String.valueOf(data.getStatus()));
+        y_koszt.setText(String.valueOf(data.getPrice() + " zl"));
+    }
+
+    @FXML
     private AnchorPane mainAnPen;
     @FXML
     private Button start_button;
@@ -101,18 +161,6 @@ public class ZarSamController {
     private Label y_koszt;
     @FXML
     private CheckBox yellowCheck;
-
-    @FXML
-    private void initialize(){
-        ClientRequest clientRequest = new ClientRequest();
-        clientRequest.setData(1);
-        clientRequest.setAction("showVehicleData");
-
-        ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
-        VehicleModelData data = (VehicleModelData) serverResponse.getData();
-
-        g_zasieg.setText(String.valueOf(data.getRange()));
-    }
 
     @FXML
     private void sendIdOfCar(ActionEvent event) throws Exception {

@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="mainAnPen" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.ZarSamController">
    <children>
       <AnchorPane layoutY="440.0" prefHeight="60.0" prefWidth="700.0" style="-fx-background-color: #0598ff;">
@@ -69,37 +68,37 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="g_model" layoutX="31.0" layoutY="34.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="g_model" alignment="CENTER" layoutY="34.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="g_pozycja" layoutX="34.0" layoutY="81.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="g_pozycja" alignment="CENTER" layoutY="81.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="g_stan_paliwa" layoutX="34.0" layoutY="126.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="g_stan_paliwa" alignment="CENTER" layoutX="-1.0" layoutY="126.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="g_rok_prod" layoutX="34.0" layoutY="171.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="g_rok_prod" alignment="CENTER" layoutX="1.0" layoutY="171.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="g_zasieg" layoutX="35.0" layoutY="216.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="g_zasieg" alignment="CENTER" layoutY="216.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="g_status" layoutX="35.0" layoutY="261.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="g_status" alignment="CENTER" layoutY="261.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="g_koszt" layoutX="36.0" layoutY="306.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="g_koszt" alignment="CENTER" layoutX="1.0" layoutY="306.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
@@ -148,37 +147,37 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="b_model" layoutX="32.0" layoutY="34.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="b_model" alignment="CENTER" layoutX="1.0" layoutY="34.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="b_pozycja" layoutX="35.0" layoutY="81.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="b_pozycja" alignment="CENTER" layoutX="1.0" layoutY="81.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="b_stan_paliwa" layoutX="35.0" layoutY="126.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="b_stan_paliwa" alignment="CENTER" layoutX="1.0" layoutY="126.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="b_rok_prod" layoutX="35.0" layoutY="171.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="b_rok_prod" alignment="CENTER" layoutY="171.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="b_zasieg" layoutX="36.0" layoutY="216.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="b_zasieg" alignment="CENTER" layoutY="216.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="b_status" layoutX="36.0" layoutY="261.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="b_status" alignment="CENTER" layoutX="2.0" layoutY="261.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="b_koszt" layoutX="37.0" layoutY="306.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="b_koszt" alignment="CENTER" layoutX="1.0" layoutY="306.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
@@ -227,37 +226,37 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="r_model" layoutX="29.0" layoutY="34.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="r_model" alignment="CENTER" layoutY="34.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="r_pozycja" layoutX="32.0" layoutY="81.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="r_pozycja" alignment="CENTER" layoutY="81.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="r_stan_paliwa" layoutX="32.0" layoutY="126.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="r_stan_paliwa" alignment="CENTER" layoutX="-1.0" layoutY="126.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="r_rok_prod" layoutX="32.0" layoutY="171.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="r_rok_prod" alignment="CENTER" layoutX="2.0" layoutY="171.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="r_zasieg" layoutX="33.0" layoutY="216.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="r_zasieg" alignment="CENTER" layoutX="-1.0" layoutY="216.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="r_status" layoutX="33.0" layoutY="261.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="r_status" alignment="CENTER" layoutY="261.0" prefHeight="25.0" prefWidth="175.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="r_koszt" layoutX="34.0" layoutY="306.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="r_koszt" alignment="CENTER" layoutY="306.0" prefHeight="25.0" prefWidth="177.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
@@ -306,37 +305,37 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="y_model" layoutX="29.0" layoutY="34.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="y_model" alignment="CENTER" layoutY="34.0" prefHeight="25.0" prefWidth="169.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="y_pozycja" layoutX="32.0" layoutY="81.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="y_pozycja" alignment="CENTER" layoutY="81.0" prefHeight="25.0" prefWidth="169.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="y_stan_paliwa" layoutX="32.0" layoutY="126.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="y_stan_paliwa" alignment="CENTER" layoutX="1.0" layoutY="126.0" prefHeight="25.0" prefWidth="169.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="y_rok_prod" layoutX="32.0" layoutY="171.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="y_rok_prod" alignment="CENTER" layoutX="1.0" layoutY="171.0" prefHeight="25.0" prefWidth="169.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="y_zasieg" layoutX="33.0" layoutY="216.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="y_zasieg" alignment="CENTER" layoutX="1.0" layoutY="216.0" prefHeight="25.0" prefWidth="169.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="y_status" layoutX="33.0" layoutY="261.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="y_status" alignment="CENTER" layoutX="1.0" layoutY="261.0" prefHeight="25.0" prefWidth="169.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="y_koszt" layoutX="34.0" layoutY="306.0" prefHeight="25.0" prefWidth="112.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="y_koszt" alignment="CENTER" layoutY="306.0" prefHeight="25.0" prefWidth="169.0" text="        NULL" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
