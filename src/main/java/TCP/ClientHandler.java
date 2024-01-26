@@ -7,12 +7,15 @@ import Classes.Vehicle;
 import DTO.*;
 import Repositories.RideRepository;
 import Repositories.RouteRepository;
+import Repositories.UserRepository;
 import Repositories.VehicleRepository;
 import Services.RideService;
 import Services.VehicleService;
 
 import java.io.*;
 import java.net.Socket;
+
+import static Repositories.UserRepository.getUserBalanceById;
 
 public class ClientHandler implements Runnable {
     private Socket clientSocket;
@@ -100,6 +103,14 @@ public class ClientHandler implements Runnable {
                     VehicleModelData vehicleModelData = VehicleService.getVehicleModelDataById(vehicleId);
 
                     serverResponse.setData(vehicleModelData);
+                    break;
+                }
+
+                case "showUserBalance": {
+                    Integer userId = clientRequest.getPrivateToken();
+                    double balance = UserRepository.getUserBalanceById(userId);
+
+                    serverResponse.setData(balance);
                     break;
                 }
 

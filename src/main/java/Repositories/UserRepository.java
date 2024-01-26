@@ -79,6 +79,23 @@ public class UserRepository {
         return null;
     }
 
+    public static double getUserBalanceById(int userID) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT Balance FROM User WHERE User_ID = ?")) {
+            preparedStatement.setInt(1, userID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getDouble("Balance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
     public static void updateBalance(int userId, double amount) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(

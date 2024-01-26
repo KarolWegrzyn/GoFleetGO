@@ -149,7 +149,7 @@ public class VehicleRepository {
                 double maxSpeed = resultSet.getDouble("Max_speed");
                 double price = resultSet.getDouble("price");
 
-                double range = fuelLevel/200;
+                double range = fuelLevel;
 
                 return new VehicleModelData(row, column, brand, engine, fuelLevel, yearOfProduction, range, status, price);
             }
