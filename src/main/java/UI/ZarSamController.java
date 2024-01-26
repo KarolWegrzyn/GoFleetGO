@@ -82,7 +82,6 @@ public class ZarSamController {
     @FXML
     private Button start_button;
 
-
     @FXML
     private AnchorPane greenAnPen;
     @FXML
@@ -186,12 +185,16 @@ public class ZarSamController {
         ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
         System.out.println("id of chosen vehicle: " + id);
 
-        Stage stage = (Stage) mainAnPen.getScene().getWindow();
-        stage.close();
-        MovingObjectWithObstacles d = new MovingObjectWithObstacles();
-        d.setId(id); // ustalanie koloru
-        Stage stage1 = new Stage();
-        stage1.setScene(d.start());
-        stage1.show();
+        if (serverResponse.getResultCode() == 500){
+            System.out.println("vehicle with id: " + id + " is not free");
+        } else {
+            Stage stage = (Stage) mainAnPen.getScene().getWindow();
+            stage.close();
+            MovingObjectWithObstacles d = new MovingObjectWithObstacles();
+            d.setId(id); // ustalanie koloru
+            Stage stage1 = new Stage();
+            stage1.setScene(d.start());
+            stage1.show();
+        }
     }
 }

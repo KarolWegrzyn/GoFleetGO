@@ -54,14 +54,16 @@ public class ClientHandler implements Runnable {
                     Integer vehicleId = (Integer) clientRequest.getData();
                     Integer userId = clientRequest.getPrivateToken();
 
-                    VehicleRepository.updateStatus(vehicleId, Vehicle.VehicleStatus.inUse);
                     Vehicle vehicle = VehicleRepository.findVehicleById(vehicleId);
-                    Integer newRouteId = RouteRepository.createNewRoute(vehicle.getRow(), vehicle.getColumn());
-
-                    Ride newRide = RideRepository.createNewRide(userId, vehicleId, null, newRouteId);
-
-                    assert newRide != null;
-                    serverResponse.setData(newRide.getRideID());
+                    if (!vehicle.getStatus().equals(Vehicle.VehicleStatus.free)){
+                        serverResponse.setResultCode(500);
+                    } else {
+                        VehicleRepository.updateStatus(vehicleId, Vehicle.VehicleStatus.inUse);
+                        Integer newRouteId = RouteRepository.createNewRoute(vehicle.getRow(), vehicle.getColumn());
+                        Ride newRide = RideRepository.createNewRide(userId, vehicleId, null, newRouteId);
+                        assert newRide != null;
+                        serverResponse.setData(newRide.getRideID());
+                    }
                     break;
                 }
 
