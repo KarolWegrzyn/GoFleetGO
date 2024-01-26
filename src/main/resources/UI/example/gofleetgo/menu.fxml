@@ -26,7 +26,7 @@
    <right>
       <AnchorPane prefHeight="379.0" prefWidth="704.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="butoon_zar_sam" layoutX="160.0" layoutY="94.0" mnemonicParsing="false" onAction="#changeToZarSam" prefHeight="55.0" prefWidth="381.0" style="-fx-background-color: #0598ff;" text="Zarezerwuj Pojazd" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="butoon_zar_sam" layoutX="160.0" layoutY="94.0" mnemonicParsing="false" onAction="#changeToZarSam" prefHeight="55.0" prefWidth="381.0" style="-fx-background-color: #0598ff;" text="Wybierz i Wypożycz Pojazd" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>

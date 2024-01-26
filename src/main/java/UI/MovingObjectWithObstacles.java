@@ -4,7 +4,6 @@ import Classes.Route;
 import DTO.ClientRequest;
 import DTO.ServerResponse;
 import DTO.StartRideData;
-import Repositories.VehicleRepository;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -18,7 +17,6 @@ import javafx.scene.text.TextAlignment;
 import util.GlobalData;
 import util.NetworkClient;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
