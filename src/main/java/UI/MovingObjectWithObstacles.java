@@ -69,8 +69,6 @@ public class MovingObjectWithObstacles {
         clientRequest.setAction("updateLocation");
 
         NetworkClient.sendRequest(clientRequest);
-
-        //VehicleRepository.updateLocation(id, object.getCenterX(), object.getCenterY());
     }
 
     private void UpdateFuelLevel() {
@@ -83,8 +81,6 @@ public class MovingObjectWithObstacles {
         clientRequest.setAction("updateFuelLevel");
 
         NetworkClient.sendRequest(clientRequest);
-
-        //VehicleRepository.updateFuelLevel(id, distanceFromLastUpdate);
         distanceFromLastUpdate = 0;
     }
 
