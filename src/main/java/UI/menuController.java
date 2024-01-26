@@ -1,13 +1,19 @@
 package UI;
 
+import DTO.ClientRequest;
+import DTO.ServerResponse;
+import DTO.VehicleModelData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import util.GlobalData;
+import util.NetworkClient;
 
 public class menuController {
     @FXML
@@ -18,7 +24,19 @@ public class menuController {
     private Button button_wyp_sam;
     @FXML
     private Button button_hist_przejazd;
+    @FXML
+    private Label balance;
 
+    @FXML
+    public void initialize(){
+        ClientRequest clientRequest = new ClientRequest();
+        clientRequest.setPrivateToken(GlobalData.getUserId());
+        clientRequest.setAction("showUserBalance");
+
+        ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
+        double data = (double) serverResponse.getData();
+        balance.setText(String.valueOf(data));
+    }
 
     @FXML
     private void changeToZarSam(ActionEvent event){
