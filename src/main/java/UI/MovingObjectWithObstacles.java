@@ -4,6 +4,7 @@ import Classes.Route;
 import DTO.ClientRequest;
 import DTO.ServerResponse;
 import DTO.StartRideData;
+import DTO.UpdateVehicleData;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -47,7 +48,7 @@ public class MovingObjectWithObstacles {
     private boolean journeyEnded = false;
     private Text summaryText;
     private double totalDistance = 0.0;
-    private int id;
+    private Integer id;
     double newX;
     double newY;
 
@@ -60,11 +61,12 @@ public class MovingObjectWithObstacles {
 
     private void UpdateLocation() {
         ClientRequest clientRequest = new ClientRequest();
-        Route route = new Route();
-        route.setFinishRow(object.getCenterX());
-        route.setFinishColumn(object.getCenterY());
+        UpdateVehicleData updateVehicleData = new UpdateVehicleData();
+        updateVehicleData.setVehicleId(id);
+        updateVehicleData.setRow(object.getCenterX());
+        updateVehicleData.setColumn(object.getCenterY());
 
-        clientRequest.setData(route);
+        clientRequest.setData(updateVehicleData);
         clientRequest.setPrivateToken(GlobalData.getUserId());
         clientRequest.setAction("updateLocation");
 
@@ -73,10 +75,11 @@ public class MovingObjectWithObstacles {
 
     private void UpdateFuelLevel() {
         ClientRequest clientRequest = new ClientRequest();
-        Route route = new Route();
-        route.setDistance(distanceFromLastUpdate);
+        UpdateVehicleData updateVehicleData = new UpdateVehicleData();
+        updateVehicleData.setVehicleId(id);
+        updateVehicleData.setDistanceFromLastUpdate(distanceFromLastUpdate);
 
-        clientRequest.setData(route);
+        clientRequest.setData(updateVehicleData);
         clientRequest.setPrivateToken(GlobalData.getUserId());
         clientRequest.setAction("updateFuelLevel");
 
@@ -124,6 +127,8 @@ public class MovingObjectWithObstacles {
         clientRequest.setAction("endRide");
 
         NetworkClient.sendRequest(clientRequest);
+        UpdateFuelLevel();
+        UpdateLocation();
         hideAllObjects();
         showSummary();
     }
@@ -149,6 +154,8 @@ public class MovingObjectWithObstacles {
         clientRequest.setAction("endRideByColision");
 
         NetworkClient.sendRequest(clientRequest);
+        UpdateFuelLevel();
+        UpdateLocation();
         hideAllObjects();
         showColisionSummary();
     }

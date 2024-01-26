@@ -15,6 +15,7 @@ public class RideService {
         VehicleRepository.updateLocation(vehicleId, route.getFinishRow(), route.getFinishColumn());
 
         RouteRepository.updateRoute(ride.getRouteID(), route.getFinishRow(),route.getFinishColumn(), route.getDistance());
+        //VehicleRepository.updateFuelLevel(vehicleId, route.getDistance());
 
         Vehicle vehicle = VehicleRepository.findVehicleById(vehicleId);
         Model model = ModelRepository.findModelById(vehicle.getModelID());
