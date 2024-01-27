@@ -5,6 +5,9 @@ import DTO.ServerResponse;
 import DTO.VehicleModelData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -165,6 +168,9 @@ public class ZarSamController {
     private Label error;
 
     @FXML
+    private Button back_button;
+
+    @FXML
     private void sendIdOfCar(ActionEvent event) throws Exception {
         error.setText("");
         if(greenCheck.isSelected())
@@ -188,6 +194,13 @@ public class ZarSamController {
         ServerResponse serverResponse1 = NetworkClient.sendRequest(clientRequest1);
         double userMoney = (double) serverResponse1.getData();
 
+        boolean canRentACar = true;
+        if (userMoney <= 0){
+            error.setText("You do not have enough money!");
+            System.out.println("You do not have enough money!");
+            canRentACar = false;
+        }
+
         ClientRequest clientRequest2 = new ClientRequest();
         clientRequest2.setData(id);
         clientRequest2.setPrivateToken(GlobalData.getUserId());
@@ -196,17 +209,9 @@ public class ZarSamController {
         ServerResponse serverResponse2 = NetworkClient.sendRequest(clientRequest2);
         System.out.println("id of chosen vehicle: " + id);
 
-        boolean canRentACar = true;
-
         if (serverResponse2.getResultCode() == 500){
             error.setText("Selected vehicle is not free!");
             System.out.println("vehicle with id: " + id + " is not free");
-            canRentACar = false;
-        }
-
-        if (userMoney <= 0){
-            error.setText("You do not have enough money!");
-            System.out.println("You do not have enough money!");
             canRentACar = false;
         }
 
@@ -218,6 +223,24 @@ public class ZarSamController {
             Stage stage1 = new Stage();
             stage1.setScene(d.start());
             stage1.show();
+        }
+    }
+
+    @FXML
+    private void changeToMenu(ActionEvent event) {
+        if (event.getSource().equals(back_button)) {
+            try {
+                Stage stage = (Stage) mainAnPen.getScene().getWindow();
+                stage.close();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/example/gofleetgo/menu.fxml"));
+                Parent root = (Parent) fxmlLoader.load();
+                Stage stage1 = new Stage();
+                stage1.setScene(new Scene(root));
+                stage1.setTitle("GoFleetGo");
+                stage1.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

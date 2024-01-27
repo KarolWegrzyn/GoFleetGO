@@ -5,6 +5,9 @@ import DTO.ClientRequest;
 import DTO.ServerResponse;
 import DTO.StartRideData;
 import DTO.UpdateVehicleData;
+import javafx.animation.PauseTransition;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -15,9 +18,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import util.GlobalData;
 import util.NetworkClient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -106,7 +112,7 @@ public class MovingObjectWithObstacles {
         price = startRideData.getPrice();
     }
 
-    public void endJourney() {
+    public void endJourney() throws InterruptedException, IOException {
         updateLocationTask.cancel(true);
         updateFuelLevelTask.cancel(true);
         executorService.shutdown();
@@ -131,9 +137,28 @@ public class MovingObjectWithObstacles {
         UpdateLocation();
         hideAllObjects();
         showSummary();
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(5));
+        pause.setOnFinished(event -> {
+            try {
+                Stage stage = (Stage) mapPane.getScene().getWindow();
+                stage.close();
+
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/example/gofleetgo/menu.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage stage1 = new Stage();
+                stage1.setScene(new Scene(root));
+                stage1.setTitle("GoFleetGo");
+                stage1.show();
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle the exception appropriately
+            }
+        });
+
+        pause.play();
     }
 
-    public void endJourneyByColision() {
+    public void endJourneyByColision() throws InterruptedException, IOException {
         updateLocationTask.cancel(true);
         updateFuelLevelTask.cancel(true);
         executorService.shutdown();
@@ -158,6 +183,25 @@ public class MovingObjectWithObstacles {
         UpdateLocation();
         hideAllObjects();
         showColisionSummary();
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(5));
+        pause.setOnFinished(event -> {
+            try {
+                Stage stage = (Stage) mapPane.getScene().getWindow();
+                stage.close();
+
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/example/gofleetgo/menu.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage stage1 = new Stage();
+                stage1.setScene(new Scene(root));
+                stage1.setTitle("GoFleetGo");
+                stage1.show();
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle the exception appropriately
+            }
+        });
+
+        pause.play();
     }
 
     public Scene start() throws Exception {
@@ -225,7 +269,15 @@ public class MovingObjectWithObstacles {
                 obstacle5, obstacle6, obstacle7, obstacle8);
 
         // Obsługa zdarzeń klawiatury
-        mapPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
+        mapPane.setOnKeyPressed(event -> {
+            try {
+                handleKeyPress(event.getCode());
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         Scene scene = new Scene(mapPane, 700, 500); // Zmiana rozmiarów scen
         // Ustawienie fokusu na mapie, aby obsługa zdarzeń klawiatury działała
@@ -275,7 +327,7 @@ public class MovingObjectWithObstacles {
         summaryText.setText(summary);
         summaryText.setVisible(true);
     }
-    private void hideAllObjects() {
+    private void hideAllObjects() throws InterruptedException, IOException {
         object.setVisible(false); // Ukryj kółko
 
         for (Rectangle obstacle : obstacles) {
@@ -338,7 +390,7 @@ public class MovingObjectWithObstacles {
         colorLabel.setText("Color: " + colorName);
     }
 
-    private void handleKeyPress(KeyCode code) {
+    private void handleKeyPress(KeyCode code) throws InterruptedException, IOException {
         if (journeyEnded) {
             return; // Jeśli przejazd został zakończony, przerwij obsługę klawisza
         }

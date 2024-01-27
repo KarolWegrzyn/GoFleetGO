@@ -1,5 +1,8 @@
 package UI;
 
+import DTO.ClientRequest;
+import DTO.LoginData;
+import DTO.ServerResponse;
 import Repositories.UserRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import util.GlobalData;
+import util.NetworkClient;
 
 public class AddBalanceController {
     @FXML
@@ -23,6 +27,8 @@ public class AddBalanceController {
     private Label error_message;
     @FXML
     private Button add_balance_button;
+    @FXML
+    private Button back_button;
 
     @FXML
     private void addBalanceToUser(ActionEvent event)
@@ -63,6 +69,23 @@ public class AddBalanceController {
                 {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+    @FXML
+    private void changeToMenu(ActionEvent event) {
+        if (event.getSource().equals(back_button)) {
+            try {
+                    Stage stage = (Stage) add_balance_pane.getScene().getWindow();
+                    stage.close();
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/example/gofleetgo/menu.fxml"));
+                    Parent root = (Parent) fxmlLoader.load();
+                    Stage stage1 = new Stage();
+                    stage1.setScene(new Scene(root));
+                    stage1.setTitle("GoFleetGo");
+                    stage1.show();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
