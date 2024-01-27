@@ -38,6 +38,11 @@
             </Button>
             <Label layoutX="20.0" layoutY="14.0" prefHeight="39.0" prefWidth="66.0" text="Stan konta: " />
             <Label fx:id="balance" layoutX="86.0" layoutY="25.0" prefHeight="17.0" prefWidth="111.0" text="balance" />
+            <Button fx:id="button_add_balance" layoutX="161.0" layoutY="264.0" mnemonicParsing="false" onAction="#changeToAddBalance" prefHeight="55.0" prefWidth="378.0" style="-fx-background-color: #0598ff;" text="Doładuj konto" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </right>

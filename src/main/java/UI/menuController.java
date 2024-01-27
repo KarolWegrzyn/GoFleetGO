@@ -25,6 +25,8 @@ public class menuController {
     @FXML
     private Button button_hist_przejazd;
     @FXML
+    private Button button_add_balance;
+    @FXML
     private Label balance;
 
     @FXML
@@ -68,6 +70,24 @@ public class menuController {
                 Stage stage1 = new Stage();
                 stage1.setScene(d.start());
                 stage1.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void changeToAddBalance(ActionEvent event) {
+        if (event.getSource().equals(button_add_balance)) {
+            try {
+                Stage stage = (Stage) borderPane_menu.getScene().getWindow();
+                stage.close();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UI/example/gofleetgo/add_balance.fxml"));
+                Parent root = (Parent) fxmlLoader.load();
+                Stage stage0 = new Stage();
+                stage0.setScene(new Scene(root));
+                stage0.setTitle("GoFleetGo");
+                stage0.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -162,7 +162,11 @@ public class ZarSamController {
     private CheckBox yellowCheck;
 
     @FXML
+    private Label error;
+
+    @FXML
     private void sendIdOfCar(ActionEvent event) throws Exception {
+        error.setText("");
         if(greenCheck.isSelected())
         {
             id=1;
@@ -176,18 +180,37 @@ public class ZarSamController {
         {
             id=4;
         }
+        ClientRequest clientRequest1 = new ClientRequest();
+        clientRequest1.setData(id);
+        clientRequest1.setPrivateToken(GlobalData.getUserId());
 
-        ClientRequest clientRequest = new ClientRequest();
-        clientRequest.setData(id);
-        clientRequest.setPrivateToken(GlobalData.getUserId());
+        clientRequest1.setAction("showUserBalance");
+        ServerResponse serverResponse1 = NetworkClient.sendRequest(clientRequest1);
+        double userMoney = (double) serverResponse1.getData();
 
-        clientRequest.setAction("createNewRide");
-        ServerResponse serverResponse = NetworkClient.sendRequest(clientRequest);
+        ClientRequest clientRequest2 = new ClientRequest();
+        clientRequest2.setData(id);
+        clientRequest2.setPrivateToken(GlobalData.getUserId());
+
+        clientRequest2.setAction("createNewRide");
+        ServerResponse serverResponse2 = NetworkClient.sendRequest(clientRequest2);
         System.out.println("id of chosen vehicle: " + id);
 
-        if (serverResponse.getResultCode() == 500){
+        boolean canRentACar = true;
+
+        if (serverResponse2.getResultCode() == 500){
+            error.setText("Selected vehicle is not free!");
             System.out.println("vehicle with id: " + id + " is not free");
-        } else {
+            canRentACar = false;
+        }
+
+        if (userMoney <= 0){
+            error.setText("You do not have enough money!");
+            System.out.println("You do not have enough money!");
+            canRentACar = false;
+        }
+
+        if(canRentACar) {
             Stage stage = (Stage) mainAnPen.getScene().getWindow();
             stage.close();
             MovingObjectWithObstacles d = new MovingObjectWithObstacles();

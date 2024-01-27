@@ -119,7 +119,6 @@ public class ClientHandler implements Runnable {
                     break;
             }
 
-
             objectOutputStream.writeObject(serverResponse);
 
         } catch (Exception e) {

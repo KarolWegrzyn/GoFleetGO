@@ -15,6 +15,11 @@
                   <Font size="16.0" />
                </font>
             </Button>
+            <Label fx:id="error" alignment="CENTER" layoutX="14.0" layoutY="1.0" prefHeight="60.0" prefWidth="154.0" textFill="RED" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="60.0" prefWidth="700.0" style="-fx-background-color: #0598ff;">

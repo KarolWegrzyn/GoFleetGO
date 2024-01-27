@@ -233,8 +233,6 @@ public class MovingObjectWithObstacles {
         return scene ;
     }
 
-
-
     public void setId(int id_)
     {
         id = id_;
@@ -242,7 +240,6 @@ public class MovingObjectWithObstacles {
     public void setInitialPosition(double x, double y) {
         placeObjectOnMap(x, y);
     }
-
 
     private void initializeSummaryText() {
         summaryText = new Text();
